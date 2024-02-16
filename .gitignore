@@ -50,6 +50,30 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+# Visual Studio Code generated
+.vscode/
+
+# User-specific files
+*.pidb
+*.suo
+*.user
+*.userprefs
+*.lock
+*.sln.docstates
+
+# Auto generated - ignore all files and folders ending in .meta
+*.meta
+
+# Unity3D generated meta files
+*.pidb.meta
+
+# ML-Agents specific
+/Packages/com.unity.ml-agents/
+/Packages/com.unity.ml-agents.meta
+
+# macOS
+.DS_Store
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -63,6 +87,14 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+
+# Ignore PyPi build files.
+dist/
+build/
+
+# Python virtual environment
+venv/
+.mypy_cache/
 
 # Crashlytics generated file
 crashlytics-build.properties
