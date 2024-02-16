@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638436712644384189
-    m_Hash: 965817804
+      ticks: 638436715971690886
+    m_Hash: 2600444485
   m_LockFileStatus:
     m_FilePath: C:/Users/01add/Documents/GitHub/BachelorThesis/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638436712644416154
-    m_Hash: 3520653020
+      ticks: 638436715971700479
+    m_Hash: 1866449687
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
