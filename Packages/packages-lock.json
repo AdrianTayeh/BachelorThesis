@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "bz-soft.ragdoll-helper": {
-      "version": "file:bz-soft.ragdoll-helper",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.barracuda": {
       "version": "3.0.0",
       "depth": 1,
