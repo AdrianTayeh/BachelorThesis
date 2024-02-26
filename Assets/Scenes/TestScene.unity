@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 164796023}
   - component: {fileID: 164796022}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,6 +228,94 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1137733849}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1017307424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+  m_PrefabInstance: {fileID: 2751519124702313428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1017307425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017307424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 0
+--- !u!114 &1017307426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017307424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e7e2273ac95524ea6daccb69a8c841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  targetTransform: {fileID: 1893837101}
+  walls: []
+--- !u!114 &1017307427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017307424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 243
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 39
+      BranchSizes: 
+    VectorActionSize: 27000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 1
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: Zombie Behavior
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!65 &1017307429
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017307424}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.7465999, z: 0.29314798}
+  m_Center: {x: -2.0486923e-10, y: 0.9331496, z: -0.034273032}
 --- !u!1 &1137733848
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +364,7 @@ GameObject:
   - component: {fileID: 1182451886}
   - component: {fileID: 1182451885}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,7 +669,7 @@ GameObject:
   - component: {fileID: 1540270821}
   - component: {fileID: 1540270820}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -913,7 +1001,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -933,7 +1021,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1029,7 +1117,7 @@ GameObject:
   - component: {fileID: 1987229477}
   - component: {fileID: 1987229476}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1173,10 +1261,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: ZombieAgent
       objectReference: {fileID: 0}
+    - target: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+      propertyPath: m_TagString
+      value: agent
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1017307427}
+    - targetCorrespondingSourceObject: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1017307426}
+    - targetCorrespondingSourceObject: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1017307425}
+    - targetCorrespondingSourceObject: {fileID: 8629956874473884872, guid: f3b853705cc03dc48b3911d675017849, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1017307429}
   m_SourcePrefab: {fileID: 100100000, guid: f3b853705cc03dc48b3911d675017849, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
