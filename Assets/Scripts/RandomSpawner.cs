@@ -6,7 +6,7 @@ using UnityEngine;
 public class RandomSpawner : MonoBehaviour
 {
 
-
+    public Transform centerPos; 
     private void Start()
     {
         NewRandomSpawn();
@@ -14,8 +14,9 @@ public class RandomSpawner : MonoBehaviour
 
     public void NewRandomSpawn()
     {
-        float x = Random.Range(-5f, 5f);
-        float z = Random.Range(-5, 0);
-        transform.position = new Vector3(x, 0.75f, z);
+        
+        float x = Random.Range(centerPos.position.x - 2f, centerPos.position.x + 2f);
+        float z = Random.Range(centerPos.position.z - 4f, centerPos.position.z + 4f);
+        transform.position = new Vector3(x, 1f, z);
     }
 }

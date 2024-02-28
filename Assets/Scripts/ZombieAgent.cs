@@ -45,6 +45,8 @@ public class ZombieAgent : Agent
 
     [Header("Target")]
     public Transform target;
+    public GameObject goalTarget;
+    public Transform targetStart;
 
     OrientationCubeController orientationCube;
 
@@ -81,6 +83,9 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
+        float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
+        float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
+        goalTarget.transform.position = new Vector3(x, 1f, z);
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
