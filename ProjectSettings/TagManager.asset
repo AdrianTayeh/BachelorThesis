@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - agent
-  - Target
   - Wall
+  - target
+  - ground
   layers:
   - Default
   - TransparentFX
