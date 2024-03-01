@@ -16,6 +16,8 @@ public class GroundContact : MonoBehaviour
     public bool touchingGround;
     const string k_Ground = "ground"; // Tag of ground object.
     public float rewardDist;
+    private bool rewardCollected = false;
+
     private void Start()
     {
         initPos = GameObject.Find("hips").transform.position;
@@ -26,17 +28,20 @@ public class GroundContact : MonoBehaviour
     {
         if (col.transform.CompareTag(k_Ground))
         {
+            agent.SetReward(0f);
+
             touchingGround = true;
             if (penalizeGroundContact)
             {
-                agent.SetReward(groundContactPenalty);
+                agent.AddReward(groundContactPenalty);
             }
 
             if (agentDoneOnGroundContact)
             {
                 rewardDist = 1 - (Vector3.Distance(GameObject.Find("hips").transform.position, targetPos)/Vector3.Distance(initPos, targetPos));
-                //agent.SetReward(5*rewardDist);
-                Debug.Log("Col Rewards: " + (groundContactPenalty) + "Tot rewards: " + agent.GetCumulativeReward());
+                agent.AddReward(10*rewardDist);
+                //Debug.Log("Dist Rewards: " + (rewardDist * 10) + " Tot rewards: " + agent.GetCumulativeReward());
+                rewardCollected = false;
                 agent.EndEpisode();
             }
         }
