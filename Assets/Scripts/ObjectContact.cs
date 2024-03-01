@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
 
-public class ObjectContact : MonoBehaviour
+/*public class ObjectContact : MonoBehaviour
 {
     [HideInInspector] public Agent agent;
 
@@ -66,4 +66,4 @@ public class ObjectContact : MonoBehaviour
             touchingTarget = false;
         }
     }
-}
+}*/

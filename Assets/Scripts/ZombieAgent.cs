@@ -28,6 +28,8 @@ public class ZombieAgent : Agent
     public Transform forearmR;
     public Transform handR;
 
+
+
     [Header("Walk Speed")]
     [Range(0.1f, 4f)]
     [SerializeField]
@@ -75,6 +77,7 @@ public class ZombieAgent : Agent
         jdController.SetupBodyPart(armR);
         jdController.SetupBodyPart(forearmR);
         jdController.SetupBodyPart(handR);
+
     }
 
     public override void OnEpisodeBegin()
@@ -85,7 +88,7 @@ public class ZombieAgent : Agent
         }
         float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
         float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
-        goalTarget.transform.position = new Vector3(x, 1f, z);
+        //goalTarget.transform.position = new Vector3(x, 1f, z);
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
@@ -210,31 +213,21 @@ public class ZombieAgent : Agent
     {
         UpdateOrientationObjects();
 
-        //Penalty if feet cross over
-        var footSpacingReward = Vector3.Dot(footR.position - footL.position, footL.right);
-        if (footSpacingReward > 0.1f) footSpacingReward = 0.1f;
-        AddReward(footSpacingReward);
-
         var cubeForward = orientationCube.transform.forward;
         var lookAtTargetReward = Vector3.Dot(head.forward, cubeForward) + 1;
 
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
 
         if (earlyTraining)
-        { //*Important* Forces movement towards target (penalize stationary swinging)
+        {
             matchSpeedReward = Vector3.Dot(GetAvgVelocity(), cubeForward);
             if (matchSpeedReward > 0) matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
         }
 
-        AddReward(matchSpeedReward + 0.1f * lookAtTargetReward);
+        //AddReward(matchSpeedReward + 0.1f * lookAtTargetReward);
     }
 
 
-    public void TouchedTarget()
-    {
-        AddReward(1f);
-        //EndEpisode();
-    }
 
 
 }

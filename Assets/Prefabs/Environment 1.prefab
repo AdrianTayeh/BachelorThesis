@@ -741,10 +741,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4013897065050263439}
     m_Modifications:
+    - target: {fileID: 109487284671376459, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
     - target: {fileID: 162222844913589344, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 332415883534443417, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
     - target: {fileID: 1188353514037626324, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.000000014901161
@@ -821,6 +829,22 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.000000070780516
       objectReference: {fileID: 0}
+    - target: {fileID: 3541617908082186611, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
+    - target: {fileID: 3541617908082186611, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: groundContactPenalty
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541617908082186611, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: penalizeGroundContact
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541617908082186611, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agentDoneOnGroundContact
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3799011192542707878, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.000000009647253
@@ -836,6 +860,22 @@ PrefabInstance:
     - target: {fileID: 3842259319115666299, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_Name
       value: WalkerRagdoll
+      objectReference: {fileID: 0}
+    - target: {fileID: 4284242069379273592, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
+    - target: {fileID: 4284242069379273592, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: groundContactPenalty
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4284242069379273592, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: penalizeGroundContact
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4284242069379273592, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agentDoneOnGroundContact
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4449847172301296794, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_ConnectedAnchor.x
@@ -865,7 +905,19 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.000000067055225
       objectReference: {fileID: 0}
+    - target: {fileID: 4833614218416380240, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
     - target: {fileID: 4850026718535226840, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
+    - target: {fileID: 5270733732535495043, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 4187849959708423420}
+    - target: {fileID: 5291164672241589669, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: agent
       value: 
       objectReference: {fileID: 4187849959708423420}
@@ -1111,7 +1163,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 5f472918a7e016144914c3a5821405f9, type: 3}
+  m_Model: {fileID: 0}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
