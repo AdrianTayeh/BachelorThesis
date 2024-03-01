@@ -39,7 +39,7 @@ public class GroundContact : MonoBehaviour
             if (agentDoneOnGroundContact)
             {
                 rewardDist = 1 - (Vector3.Distance(GameObject.Find("hips").transform.position, targetPos)/Vector3.Distance(initPos, targetPos));
-                agent.AddReward(10*rewardDist);
+                agent.AddReward(6*rewardDist);
                 //Debug.Log("Dist Rewards: " + (rewardDist * 10) + " Tot rewards: " + agent.GetCumulativeReward());
                 rewardCollected = false;
                 agent.EndEpisode();
