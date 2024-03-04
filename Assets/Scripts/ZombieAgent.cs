@@ -27,7 +27,12 @@ public class ZombieAgent : Agent
     public Transform forearmR;
     public Transform handR;
 
-
+    [Header("Stabilizer")]
+    [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
+    float minStabilizerTorque = 1000;
+    float maxStabilizerTorque = 4000;
+    [SerializeField] Stabilizer hipsStabilizer;
+    [SerializeField] Stabilizer spineStabilizer;
 
     [Header("Walk Speed")]
     [Range(0.1f, 10f)]
@@ -40,6 +45,12 @@ public class ZombieAgent : Agent
     {
         get { return targetWalkingSpeed; }
         set { targetWalkingSpeed = Mathf.Clamp(value, minWalkingSpeed, maxWalkingSpeed); }
+    }
+
+    public float StabilizerTorque
+    {
+        get { return stabilizerTorque; }
+        set { stabilizerTorque = Mathf.Clamp(value,minStabilizerTorque, maxStabilizerTorque); }
     }
 
     public bool randomizeWalkSpeedEachEpisode;
@@ -77,6 +88,9 @@ public class ZombieAgent : Agent
         jdController.SetupBodyPart(armR);
         jdController.SetupBodyPart(forearmR);
         jdController.SetupBodyPart(handR);
+
+        hipsStabilizer.uprightTorque = stabilizerTorque;
+        spineStabilizer.uprightTorque = stabilizerTorque;
 
     }
 
