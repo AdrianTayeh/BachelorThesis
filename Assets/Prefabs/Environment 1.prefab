@@ -1154,7 +1154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 236
+    VectorObservationSize: 243
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 39
@@ -1163,7 +1163,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 4a2661d24ee835e4b9da53bb9a349c89, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -1205,7 +1205,7 @@ MonoBehaviour:
   forearmR: {fileID: 744629977705889452}
   handR: {fileID: 8984832082203894489}
   targetWalkingSpeed: 2
-  randomizeWalkSpeedEachEpisode: 0
+  randomizeWalkSpeedEachEpisode: 1
   target: {fileID: 8554604670957851383}
   goalTarget: {fileID: 6145123060130769141}
   targetStart: {fileID: 8242232629982627649}

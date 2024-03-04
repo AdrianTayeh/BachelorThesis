@@ -1,5 +1,5 @@
 behaviors:
-  ZombieWalker:
+  Zombie Walker:
     trainer_type: ppo
     hyperparameters:
       batch_size: 10

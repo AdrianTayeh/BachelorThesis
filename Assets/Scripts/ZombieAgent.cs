@@ -8,7 +8,6 @@ using System;
 using Random = UnityEngine.Random;
 public class ZombieAgent : Agent
 {
-    public bool earlyTraining = false;
 
     [Header("Body Parts")]
     public Transform hips;
@@ -31,11 +30,11 @@ public class ZombieAgent : Agent
 
 
     [Header("Walk Speed")]
-    [Range(0.1f, 4f)]
+    [Range(0.1f, 10f)]
     [SerializeField]
-    float targetWalkingSpeed = 2;
-    float minWalkingSpeed = 0.1f;
-    float maxWalkingSpeed = 4f;
+    float targetWalkingSpeed = 10f;
+    const float minWalkingSpeed = 0.1f;
+    const float maxWalkingSpeed = 10f;
 
     public float TargetWalkingSpeed
     {
@@ -44,6 +43,8 @@ public class ZombieAgent : Agent
     }
 
     public bool randomizeWalkSpeedEachEpisode;
+
+    private Vector3 worldDirToWalk = Vector3.right;
 
     [Header("Target")]
     public Transform target;
@@ -54,7 +55,6 @@ public class ZombieAgent : Agent
 
     JointDriveController jdController;
 
-    private Vector3 worldDirToWalk = Vector3.right;
     private float  initDistance;
 
     public override void Initialize()
@@ -161,6 +161,13 @@ public class ZombieAgent : Agent
     {
         var cubeForward = orientationCube.transform.forward;
 
+        var velGoal = cubeForward * TargetWalkingSpeed;
+        var avgVel = GetAvgVelocity();
+
+        sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
+
         sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
         sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
 
@@ -214,17 +221,34 @@ public class ZombieAgent : Agent
         UpdateOrientationObjects();
 
         var cubeForward = orientationCube.transform.forward;
-        var lookAtTargetReward = Vector3.Dot(head.forward, cubeForward) + 1;
 
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
 
-        if (earlyTraining)
+        if (float.IsNaN(matchSpeedReward))
         {
-            matchSpeedReward = Vector3.Dot(GetAvgVelocity(), cubeForward);
-            if (matchSpeedReward > 0) matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
+            throw new ArgumentException(
+                "NaN in moveTowardsTargetReward.\n" +
+                $" cubeForward: {cubeForward}\n" +
+                $" hips.velocity: {jdController.bodyPartsDict[hips].rb.velocity}\n" +
+                $" maximumWalkingSpeed: {maxWalkingSpeed}"
+            );
         }
 
-        //AddReward(matchSpeedReward + 0.1f * lookAtTargetReward);
+        var headForward = head.forward;
+        headForward.y = 0;
+
+        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1)*0.5f;
+
+        if (float.IsNaN(lookAtTargetReward))
+        {
+            throw new ArgumentException(
+                "NaN in lookAtTargetReward.\n" +
+                $" cubeForward: {cubeForward}\n" +
+                $" head.forward: {head.forward}"
+            );
+        }
+
+        AddReward(matchSpeedReward * lookAtTargetReward);
     }
 
 
