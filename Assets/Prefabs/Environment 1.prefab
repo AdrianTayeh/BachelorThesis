@@ -1082,6 +1082,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3842259319115666299, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 107826103244318973}
+    - targetCorrespondingSourceObject: {fileID: 5227876979853423282, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8031872132904468324}
+    - targetCorrespondingSourceObject: {fileID: 7061190630647062790, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1692571009869277651}
     - targetCorrespondingSourceObject: {fileID: 6208953377898913809, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2935492459629511937}
@@ -1154,7 +1160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 236
+    VectorObservationSize: 243
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 39
@@ -1163,7 +1169,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 7d1bdba34790ac14da18f15faa3cc733, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 4a2661d24ee835e4b9da53bb9a349c89, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -1187,7 +1193,6 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
-  earlyTraining: 1
   hips: {fileID: 6689514863270583903}
   chest: {fileID: 1629359361904581313}
   spine: {fileID: 1063888510894349208}
@@ -1204,8 +1209,11 @@ MonoBehaviour:
   armR: {fileID: 5645559701830282868}
   forearmR: {fileID: 744629977705889452}
   handR: {fileID: 8984832082203894489}
+  stabilizerTorque: 4000
+  hipsStabilizer: {fileID: 1692571009869277651}
+  spineStabilizer: {fileID: 8031872132904468324}
   targetWalkingSpeed: 2
-  randomizeWalkSpeedEachEpisode: 0
+  randomizeWalkSpeedEachEpisode: 1
   target: {fileID: 8554604670957851383}
   goalTarget: {fileID: 6145123060130769141}
   targetStart: {fileID: 8242232629982627649}
@@ -1228,6 +1236,48 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4622474907678651389, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
   m_PrefabInstance: {fileID: 89510020016088277}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5310630758598006375 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5227876979853423282, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+  m_PrefabInstance: {fileID: 89510020016088277}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8031872132904468324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5310630758598006375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89123b2cc1c12cb4aba495f8ae692928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uprightTorque: 40000
+  uprightTorqueFunction:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &5645559701830282868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5721557522779671201, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
@@ -1260,6 +1310,48 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
   m_PrefabInstance: {fileID: 89510020016088277}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6971681714467587539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7061190630647062790, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+  m_PrefabInstance: {fileID: 89510020016088277}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1692571009869277651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6971681714467587539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89123b2cc1c12cb4aba495f8ae692928, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uprightTorque: 4000
+  uprightTorqueFunction:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &7341202172479989145 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7268581755410137420, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
