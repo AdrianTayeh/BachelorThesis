@@ -41,6 +41,8 @@ public class ZombieAgent : Agent
     const float minWalkingSpeed = 0.1f;
     const float maxWalkingSpeed = 10f;
 
+
+
     public float TargetWalkingSpeed
     {
         get { return targetWalkingSpeed; }
@@ -261,6 +263,7 @@ public class ZombieAgent : Agent
                 $" head.forward: {head.forward}"
             );
         }
+
 
         AddReward(matchSpeedReward * lookAtTargetReward);
     }

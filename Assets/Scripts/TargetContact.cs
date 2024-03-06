@@ -1,26 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.MLAgents;
+using Unity.VisualScripting;
 
 [DisallowMultipleComponent]
 public class TargetContact : MonoBehaviour
 {
     [Header("Detect Targets")] public bool touchingTarget;
-    const string k_Target = "target"; // Tag on target object.
 
+    public Agent agent;
     void OnCollisionEnter(Collision col)
     {
-        if (col.transform.CompareTag(k_Target))
+        if (col.gameObject.transform.IsChildOf(agent.transform))
         {
             touchingTarget = true;
-        }
-    }
-
-    void OnCollisionExit(Collision other)
-    {
-        if (other.transform.CompareTag(k_Target))
-        {
-            touchingTarget = false;
+            agent.AddReward(20);
+            Debug.Log("Tot reward:" + agent.GetCumulativeReward());
+            agent.EndEpisode();
         }
     }
 }
