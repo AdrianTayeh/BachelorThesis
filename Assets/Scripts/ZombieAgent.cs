@@ -265,7 +265,7 @@ public class ZombieAgent : Agent
         }
 
 
-        AddReward(matchSpeedReward * lookAtTargetReward);
+        //AddReward(matchSpeedReward * lookAtTargetReward);
     }
 
 
