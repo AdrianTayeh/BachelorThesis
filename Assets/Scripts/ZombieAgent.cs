@@ -41,6 +41,8 @@ public class ZombieAgent : Agent
     const float minWalkingSpeed = 0.1f;
     const float maxWalkingSpeed = 10f;
 
+ 
+
 
 
     public float TargetWalkingSpeed
@@ -69,6 +71,7 @@ public class ZombieAgent : Agent
     JointDriveController jdController;
 
     private float  initDistance;
+    private Vector3 initHipsPos;
 
     public override void Initialize()
     {
@@ -111,7 +114,26 @@ public class ZombieAgent : Agent
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
         initDistance = Vector3.Distance(hips.position, target.position);
+        initHipsPos = hips.transform.position;
 
+
+
+    }
+
+    public void CalculateReward()
+    {
+
+        if (hips != null)
+        {
+            float distanceToTarget = Vector3.Distance(hips.position, target.position);
+            float totalDistance = Vector3.Distance(initHipsPos, target.position);
+            float progress = 1 - (distanceToTarget / totalDistance);
+
+            progress = Mathf.Clamp01(progress);
+            float reward = progress;
+            AddReward(reward);
+            Debug.Log("Reward granted, amount: " + reward);
+        }
     }
 
     void UpdateOrientationObjects()
@@ -197,6 +219,7 @@ public class ZombieAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+
         var bpDict = jdController.bodyPartsDict;
         var i = -1;
 
@@ -234,6 +257,8 @@ public class ZombieAgent : Agent
 
     private void FixedUpdate()
     {
+
+
         UpdateOrientationObjects();
 
         var cubeForward = orientationCube.transform.forward;
@@ -264,9 +289,11 @@ public class ZombieAgent : Agent
             );
         }
 
-
-        AddReward(matchSpeedReward * lookAtTargetReward);
+        Debug.Log("Current Step: " + StepCount + "Max Steps: " + MaxStep);
+        //AddReward(matchSpeedReward * lookAtTargetReward);
+              
     }
+
 
 
 

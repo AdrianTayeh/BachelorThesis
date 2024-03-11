@@ -501,6 +501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   touchingTarget: 0
   agent: {fileID: 4187849959708423420}
+  zombieAgent: {fileID: 4187849959708423420}
 --- !u!1 &6962188432811615375
 GameObject:
   m_ObjectHideFlags: 0
