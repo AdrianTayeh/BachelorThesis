@@ -43,6 +43,7 @@ public class BodyPart
 
     public void Reset(BodyPart bp)
     {
+
         bp.rb.transform.position = bp.startingPos;
         bp.rb.transform.rotation = bp.startingRot;
         bp.rb.velocity = Vector3.zero;
@@ -57,6 +58,7 @@ public class BodyPart
             bp.targetContact.touchingTarget = false;
         }
     }
+
 
     public void SetJointTargetRotation(float x, float y, float z)
     {

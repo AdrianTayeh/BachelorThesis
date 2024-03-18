@@ -41,6 +41,10 @@ public class ZombieAgent : Agent
     const float minWalkingSpeed = 0.1f;
     const float maxWalkingSpeed = 10f;
 
+    public EnvironmentCheckpoints envCheckpoints;
+
+    public bool hasCollided = false;
+
  
 
 
@@ -73,6 +77,8 @@ public class ZombieAgent : Agent
     private float  initDistance;
     private Vector3 initHipsPos;
 
+
+
     public override void Initialize()
     {
         orientationCube = GetComponentInChildren<OrientationCubeController>();
@@ -96,88 +102,62 @@ public class ZombieAgent : Agent
 
         hipsStabilizer.uprightTorque = stabilizerTorque;
         spineStabilizer.uprightTorque = stabilizerTorque;
-
     }
 
     public override void OnEpisodeBegin()
     {
+        envCheckpoints.environmentProgress[envCheckpoints.environmentID] = 0;
         foreach (var bodyPart in jdController.bodyPartsDict.Values)
         {
             bodyPart.Reset(bodyPart);
         }
-        float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
-        float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
+       
+        float x = Random.Range(targetStart.localPosition.x - 2f, targetStart.localPosition.x + 2f);
+        float z = Random.Range(targetStart.localPosition.z - 4f, targetStart.localPosition.z + 4f);
         //goalTarget.transform.position = new Vector3(x, 1f, z);
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        initDistance = Vector3.Distance(hips.position, target.position);
-        initHipsPos = hips.transform.position;
+        initDistance = Vector3.Distance(hips.localPosition, target.localPosition);
+        initHipsPos = hips.transform.localPosition;
+
+        Debug.Log("Resetting collision flag");
+        hasCollided = false;
 
 
-
-    }
-
-    public void CalculateReward()
-    {
-
-        if (hips != null)
-        {
-            float distanceToTarget = Vector3.Distance(hips.position, target.position);
-            float totalDistance = Vector3.Distance(initHipsPos, target.position);
-            float progress = 1 - (distanceToTarget / totalDistance);
-
-            progress = Mathf.Clamp01(progress);
-            float reward = progress;
-            AddReward(reward);
-            Debug.Log("Reward granted, amount: " + reward);
-        }
     }
 
     void UpdateOrientationObjects()
     {
-        worldDirToWalk = target.position - hips.position;
+        worldDirToWalk = target.localPosition - hips.localPosition;
         orientationCube.UpdateOrientation(hips, target);      
     }
 
-    Vector3 GetAvgVelocity()
-    {
-        Vector3 velSum = Vector3.zero;
+    //Vector3 GetAvgVelocity()
+    //{
+    //    Vector3 velSum = Vector3.zero;
 
-        int numOfRb = 0;
-        foreach (var item in jdController.bodyPartsList)
-        {
-            numOfRb++;
-            velSum += item.rb.velocity;
-        }
-        var avgVel = velSum / numOfRb;
-        return avgVel;
-    }
+    //    int numOfRb = 0;
+    //    foreach (var item in jdController.bodyPartsList)
+    //    {
+    //        numOfRb++;
+    //        velSum += item.rb.velocity;
+    //    }
+    //    var avgVel = velSum / numOfRb;
+    //    return avgVel;
+    //}
 
-    Vector3 GetAvgPosition()
-    {
-        Vector3 posSum = Vector3.zero;
-        int numOfRb = 0;
-        foreach(var item in jdController.bodyPartsList)
-        {
-            numOfRb++;
-            posSum += item.rb.position;
-        }
 
-        var avgPos = posSum / numOfRb;
-        return avgPos;
-    }
+    //public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
+    //{
+    //    var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
 
-    public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
-    {
-        var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
+    //    if (TargetWalkingSpeed == 0) TargetWalkingSpeed = 0.01f;
 
-        if (TargetWalkingSpeed == 0) TargetWalkingSpeed = 0.01f;
-
-        return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
-    }
+    //    return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
+    //}
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
@@ -199,17 +179,18 @@ public class ZombieAgent : Agent
     {
         var cubeForward = orientationCube.transform.forward;
 
-        var velGoal = cubeForward * TargetWalkingSpeed;
-        var avgVel = GetAvgVelocity();
+        //var velGoal = cubeForward * TargetWalkingSpeed;
+        //var avgVel = GetAvgVelocity();
 
-        sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
+        //sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
+        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
+        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
 
         sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
         sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
 
-        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
+        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.localPosition));
+        sensor.AddObservation(target.transform.localPosition);
 
         foreach (var bodyPart in jdController.bodyPartsList)
         {
@@ -261,37 +242,55 @@ public class ZombieAgent : Agent
 
         UpdateOrientationObjects();
 
-        var cubeForward = orientationCube.transform.forward;
+        //var cubeForward = orientationCube.transform.forward;
 
-        var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
+        //var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
 
-        if (float.IsNaN(matchSpeedReward))
-        {
-            throw new ArgumentException(
-                "NaN in moveTowardsTargetReward.\n" +
-                $" cubeForward: {cubeForward}\n" +
-                $" hips.velocity: {jdController.bodyPartsDict[hips].rb.velocity}\n" +
-                $" maximumWalkingSpeed: {maxWalkingSpeed}"
-            );
-        }
+        //if (float.IsNaN(matchSpeedReward))
+        //{
+        //    throw new ArgumentException(
+        //        "NaN in moveTowardsTargetReward.\n" +
+        //        $" cubeForward: {cubeForward}\n" +
+        //        $" hips.velocity: {jdController.bodyPartsDict[hips].rb.velocity}\n" +
+        //        $" maximumWalkingSpeed: {maxWalkingSpeed}"
+        //    );
+        //}
 
-        var headForward = head.forward;
-        headForward.y = 0;
+        //var headForward = head.forward;
+        //headForward.y = 0;
 
-        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1)*0.5f;
+        //var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1)*0.5f;
 
-        if (float.IsNaN(lookAtTargetReward))
-        {
-            throw new ArgumentException(
-                "NaN in lookAtTargetReward.\n" +
-                $" cubeForward: {cubeForward}\n" +
-                $" head.forward: {head.forward}"
-            );
-        }
+        //if (float.IsNaN(lookAtTargetReward))
+        //{
+        //    throw new ArgumentException(
+        //        "NaN in lookAtTargetReward.\n" +
+        //        $" cubeForward: {cubeForward}\n" +
+        //        $" head.forward: {head.forward}"
+        //    );
+        //}
 
-        Debug.Log("Current Step: " + StepCount + "Max Steps: " + MaxStep);
         //AddReward(matchSpeedReward * lookAtTargetReward);
               
+    }
+
+    public void HandleCollision(bool isWallCollision)
+    {
+        if (!hasCollided)
+        {
+            hasCollided = true;
+
+            if (isWallCollision)
+                AddReward(-1f);
+            else
+                AddReward(5f);
+            ResetAgent();
+        }
+    }
+
+    public void ResetAgent()
+    {
+        EndEpisode();
     }
 
 

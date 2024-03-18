@@ -9,15 +9,16 @@ public class TargetContact : MonoBehaviour
 {
     [Header("Detect Targets")] public bool touchingTarget;
 
-    public Agent agent;
+    public ZombieAgent agent;
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.transform.IsChildOf(agent.transform))
         {
             touchingTarget = true;
-            Debug.Log("Agent hit target");
-            agent.SetReward(1);
-            agent.EndEpisode();
+            Debug.Log("Agent hit target, Contact made with: " + col.gameObject.transform.name + "Tot R: " + agent.GetCumulativeReward() + "Agent pos at col: " + col.gameObject.transform.localPosition + " vs target pos: " + this.gameObject.transform.localPosition);
+            agent.HandleCollision(false);
+            
         }
     }
 
