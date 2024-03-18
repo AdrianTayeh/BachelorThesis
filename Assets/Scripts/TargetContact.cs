@@ -15,7 +15,7 @@ public class TargetContact : MonoBehaviour
         if (col.gameObject.transform.IsChildOf(agent.transform))
         {
             touchingTarget = true;
-            agent.AddReward(10);
+            agent.SetReward(10);
             //Debug.Log("Tot reward:" + agent.GetCumulativeReward());
             agent.EndEpisode();
         }
