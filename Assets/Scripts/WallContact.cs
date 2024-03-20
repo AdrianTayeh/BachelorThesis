@@ -15,7 +15,7 @@ public class WallContact : MonoBehaviour
         {
             //Debug.Log("Agent hit wall, Contact made with: " + col.gameObject.transform.name + " Tot R: " + agent.GetCumulativeReward() + " Pos of part that collided with wall: " + col.gameObject.transform.localPosition + " vs wall pos: " + this.gameObject.transform.localPosition);
             Debug.Log("Collided wall");
-            wallMeshRend.material = hitWallMat;
+            //wallMeshRend.material = hitWallMat;
             agent.HandleCollision(true);            
         }
     }
