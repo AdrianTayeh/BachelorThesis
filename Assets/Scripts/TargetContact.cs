@@ -16,7 +16,8 @@ public class TargetContact : MonoBehaviour
         if (col.gameObject.transform.IsChildOf(agent.transform))
         {
             touchingTarget = true;
-            Debug.Log("Agent hit target, Contact made with: " + col.gameObject.transform.name + "Tot R: " + agent.GetCumulativeReward() + "Agent pos at col: " + col.gameObject.transform.localPosition + " vs target pos: " + this.gameObject.transform.localPosition);
+            //Debug.Log("Agent hit target, Contact made with: " + col.gameObject.transform.name + "Tot R: " + agent.GetCumulativeReward() + "Agent pos at col: " + col.gameObject.transform.localPosition + " vs target pos: " + this.gameObject.transform.localPosition);
+            Debug.Log("Touching target");
             agent.HandleCollision(false);
             
         }
