@@ -2420,7 +2420,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 246d6d66d86c2ff4787a626a2ad80342, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 3bbad5932b61ada4799928d6c5814078, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -2465,6 +2465,7 @@ MonoBehaviour:
   spineStabilizer: {fileID: 8031872132904468324}
   targetWalkingSpeed: 2
   envCheckpoints: {fileID: 5199626294941773450}
+  hasCollided: 0
   randomizeWalkSpeedEachEpisode: 1
   target: {fileID: 8554604670957851383}
   goalTarget: {fileID: 6145123060130769141}

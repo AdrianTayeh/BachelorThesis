@@ -123,11 +123,11 @@ public class ZombieAgent : Agent
         initDistance = Vector3.Distance(hips.localPosition, target.localPosition);
         initHipsPos = hips.transform.localPosition;
 
-        Debug.Log("Resetting collision flag");
-        Debug.Log("collided state 2: " + hasCollided + " /should be true");
+        Debug.Log("Resetting");
+        //Debug.Log("collided state 2: " + hasCollided + " /should be true");
         timer = 0;
         hasCollided = false;
-        Debug.Log("collided state 3: " + hasCollided + " /should be false");
+        //Debug.Log("collided state 3: " + hasCollided + " /should be false");
 
 
     }
@@ -288,16 +288,21 @@ public class ZombieAgent : Agent
 
     public void HandleCollision(bool isWallCollision)
     {
-        Debug.Log("collided state 4: " + hasCollided);
+        //Debug.Log("collided state 4: " + hasCollided);
         if (!hasCollided)
         {
-            Debug.Log("applied reward");
+            //Debug.Log("applied reward");
             hasCollided = true;
 
             if (isWallCollision)
+            {
                 AddReward(-1f);
+            }
             else
+            {
+                Debug.Log("Touching target with reward: " + GetCumulativeReward());
                 AddReward(5f);
+            }
             ResetAgent();
         }
     }
@@ -306,8 +311,8 @@ public class ZombieAgent : Agent
     {
         if (timer > 1)
         {
-            Debug.Log("episode ended at: " + Time.fixedTime + " seconds with " + GetCumulativeReward() + " total rewards");
-            Debug.Log("collided state 1: " + hasCollided + " /should be true"); //should be true
+            //Debug.Log("episode ended at: " + Time.fixedTime + " seconds with " + GetCumulativeReward() + " total rewards");
+            //Debug.Log("collided state 1: " + hasCollided + " /should be true"); //should be true
             EndEpisode();
         }
     }

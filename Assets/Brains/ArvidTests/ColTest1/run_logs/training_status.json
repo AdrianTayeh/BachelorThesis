@@ -1,0 +1,29 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 100608,
+                "file_path": "results\\ColTest1\\Zombie Walker\\Zombie Walker-100608.onnx",
+                "reward": null,
+                "creation_time": 1710927694.2938304,
+                "auxillary_file_paths": [
+                    "results\\ColTest1\\Zombie Walker\\Zombie Walker-100608.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 100608,
+            "file_path": "results\\ColTest1\\Zombie Walker.onnx",
+            "reward": null,
+            "creation_time": 1710927694.2938304,
+            "auxillary_file_paths": [
+                "results\\ColTest1\\Zombie Walker\\Zombie Walker-100608.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}
