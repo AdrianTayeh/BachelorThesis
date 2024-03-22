@@ -35,10 +35,10 @@ public class EnvironmentCheckpoints : MonoBehaviour
             {
                 if (checkpointIndex == currentProgress)
                 {
-                    // Correct checkpoint
+                    //Debug.Log("Correct checkpoint");
                     environmentProgress[environmentID] = (currentProgress + 1);
                     agent.AddReward(1f);
-                    //Debug.Log("Agent #" + environmentID + " passed through gate #" + environmentProgress[environmentID] + " Current total reward: " + agent.GetCumulativeReward());
+                    Debug.Log("Agent #" + environmentID + " passed through gate #" + environmentProgress[environmentID] + " Current total reward: " + agent.GetCumulativeReward());
                 }
                 else
                 {

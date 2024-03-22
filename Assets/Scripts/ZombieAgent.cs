@@ -246,7 +246,7 @@ public class ZombieAgent : Agent
         UpdateOrientationObjects();
         timer += Time.deltaTime;
 
-        if (timer > 1)
+        if (timer > 0.5f)
         {
             //Debug.Log("timer resetting allowing more resets");
             hasCollided = false;
@@ -289,7 +289,7 @@ public class ZombieAgent : Agent
     public void HandleCollision(bool isWallCollision)
     {
         //Debug.Log("collided state 4: " + hasCollided);
-        if (!hasCollided)
+        if (!hasCollided && timer > 0.5f)
         {
             //Debug.Log("applied reward");
             hasCollided = true;
@@ -297,11 +297,12 @@ public class ZombieAgent : Agent
             if (isWallCollision)
             {
                 AddReward(-1f);
+                Debug.Log("Touching wall with reward: " + GetCumulativeReward());
             }
             else
             {
-                Debug.Log("Touching target with reward: " + GetCumulativeReward());
                 AddReward(5f);
+                Debug.Log("Touching target with reward: " + GetCumulativeReward());
             }
             ResetAgent();
         }
@@ -309,12 +310,9 @@ public class ZombieAgent : Agent
 
     public void ResetAgent()
     {
-        if (timer > 1)
-        {
-            //Debug.Log("episode ended at: " + Time.fixedTime + " seconds with " + GetCumulativeReward() + " total rewards");
-            //Debug.Log("collided state 1: " + hasCollided + " /should be true"); //should be true
-            EndEpisode();
-        }
+        //Debug.Log("episode ended at: " + Time.fixedTime + " seconds with " + GetCumulativeReward() + " total rewards");
+        //Debug.Log("collided state 1: " + hasCollided + " /should be true"); //should be true
+        EndEpisode();
     }
 
 
