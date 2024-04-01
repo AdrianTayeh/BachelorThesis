@@ -6,7 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class GroundContact : MonoBehaviour
 {
-    public Agent agent;
+    public ZombieAgent agent;
     Vector3 initPos;
     Vector3 targetPos;
 
@@ -45,6 +45,9 @@ public class GroundContact : MonoBehaviour
         //    rewardDist = 1 - (Vector3.Distance(GameObject.Find("hips").transform.position, targetPos) / Vector3.Distance(initPos, targetPos));
         //    agent.AddReward(10 * rewardDist);
         //}
+        //Debug.Log("Something collided" + this.gameObject.name);
+        
+
     }
 
 

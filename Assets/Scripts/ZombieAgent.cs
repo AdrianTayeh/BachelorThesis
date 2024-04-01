@@ -46,6 +46,9 @@ public class ZombieAgent : Agent
     public bool hasCollided = false;
 
     float timer;
+    [Header("Checkpoints")]
+    public List<Transform> checkpointList = new List<Transform>();
+
 
 
 
@@ -112,16 +115,16 @@ public class ZombieAgent : Agent
             bodyPart.Reset(bodyPart);
         }
        
-        float x = Random.Range(targetStart.localPosition.x - 2f, targetStart.localPosition.x + 2f);
-        float z = Random.Range(targetStart.localPosition.z - 4f, targetStart.localPosition.z + 4f);
+        float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
+        float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
         //goalTarget.transform.position = new Vector3(x, 1f, z);
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        initDistance = Vector3.Distance(hips.localPosition, target.localPosition);
-        initHipsPos = hips.transform.localPosition;
+        initDistance = Vector3.Distance(hips.position, target.position);
+        initHipsPos = hips.transform.position;
 
         Debug.Log("Resetting");
         //Debug.Log("collided state 2: " + hasCollided + " /should be true");
@@ -134,7 +137,7 @@ public class ZombieAgent : Agent
 
     void UpdateOrientationObjects()
     {
-        worldDirToWalk = target.localPosition - hips.localPosition;
+        worldDirToWalk = target.position - hips.position;
         orientationCube.UpdateOrientation(hips, target);      
     }
 
@@ -171,12 +174,13 @@ public class ZombieAgent : Agent
 
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.position - hips.position));
 
-        if(bp.rb.transform != hips && bp.rb.transform != handL && bp.rb.transform != handR)
-        {
-            sensor.AddObservation(bp.rb.transform.localRotation);
-            sensor.AddObservation(bp.currentStrength / jdController.maxJointForceLimit);
-        }
+        //Get rotations (including hips)
+        sensor.AddObservation(bp.rb.transform.rotation);
+
+        //Skip body parts without a joint drive
+        if (bp.rb.transform != hips) sensor.AddObservation(bp.currentStrength / jdController.maxJointForceLimit);
     }
+
 
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -192,12 +196,20 @@ public class ZombieAgent : Agent
         sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
         sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
 
-        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.localPosition));
-        sensor.AddObservation(target.transform.localPosition);
+        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
+
+
+        sensor.AddObservation(envCheckpoints.environmentProgress[envCheckpoints.environmentID]);
+
 
         foreach (var bodyPart in jdController.bodyPartsList)
         {
             CollectObservationBodyPart(bodyPart, sensor);
+        }
+
+        foreach(Transform checkpoint in checkpointList)
+        {
+            sensor.AddObservation(orientationCube.transform.InverseTransformDirection(checkpoint.transform.position));
         }
     }
 
@@ -205,9 +217,10 @@ public class ZombieAgent : Agent
     {
 
         var bpDict = jdController.bodyPartsDict;
+        var continuousActions = actions.ContinuousActions;
+
         var i = -1;
 
-        var continuousActions = actions.ContinuousActions;
         bpDict[chest].SetJointTargetRotation(continuousActions[++i], continuousActions[++i], continuousActions[++i]);
         bpDict[spine].SetJointTargetRotation(continuousActions[++i], continuousActions[++i], continuousActions[++i]);
 
@@ -286,7 +299,7 @@ public class ZombieAgent : Agent
 
     }
 
-    public void HandleCollision(bool isWallCollision)
+    public void HandleCollision(bool isTarget)
     {
         //Debug.Log("collided state 4: " + hasCollided);
         if (!hasCollided && timer > 0.5f)
@@ -294,10 +307,10 @@ public class ZombieAgent : Agent
             //Debug.Log("applied reward");
             hasCollided = true;
 
-            if (isWallCollision)
+            if (!isTarget)
             {
                 AddReward(-1f);
-                Debug.Log("Touching wall with reward: " + GetCumulativeReward());
+                Debug.Log("Touching wall, or fell on back,  with reward: " + GetCumulativeReward());
             }
             else
             {

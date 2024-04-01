@@ -1,0 +1,47 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 499946,
+                "file_path": "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-499946.onnx",
+                "reward": null,
+                "creation_time": 1711361944.1600296,
+                "auxillary_file_paths": [
+                    "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-499946.pt"
+                ]
+            },
+            {
+                "steps": 999982,
+                "file_path": "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-999982.onnx",
+                "reward": null,
+                "creation_time": 1711363349.0621357,
+                "auxillary_file_paths": [
+                    "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-999982.pt"
+                ]
+            },
+            {
+                "steps": 1000046,
+                "file_path": "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-1000046.onnx",
+                "reward": null,
+                "creation_time": 1711363349.1149068,
+                "auxillary_file_paths": [
+                    "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-1000046.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1000046,
+            "file_path": "results\\AdrianColTest10\\Zombie Walker.onnx",
+            "reward": null,
+            "creation_time": 1711363349.1149068,
+            "auxillary_file_paths": [
+                "results\\AdrianColTest10\\Zombie Walker\\Zombie Walker-1000046.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}

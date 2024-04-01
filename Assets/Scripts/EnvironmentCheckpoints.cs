@@ -7,7 +7,7 @@ public class EnvironmentCheckpoints : MonoBehaviour
 {
     public Transform checkpointsTransform;
     public int environmentID;
-    private List<CheckpointSingle> checkpointSingleList;
+    public List<CheckpointSingle> checkpointSingleList;
     public Dictionary<int, int> environmentProgress = new Dictionary<int, int>();
     public ZombieAgent agent;
 

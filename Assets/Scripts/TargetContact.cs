@@ -17,7 +17,7 @@ public class TargetContact : MonoBehaviour
         {
             touchingTarget = true;
             //Debug.Log("Agent hit target, Contact made with: " + col.gameObject.transform.name + "Tot R: " + agent.GetCumulativeReward() + "Agent pos at col: " + col.gameObject.transform.localPosition + " vs target pos: " + this.gameObject.transform.localPosition);
-            agent.HandleCollision(false);
+            agent.HandleCollision(true);
             
         }
     }

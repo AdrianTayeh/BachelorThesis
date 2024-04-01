@@ -331,6 +331,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 404215384946095024, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
   m_PrefabInstance: {fileID: 1797635769}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &388115098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6540638011856615330, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
+  m_PrefabInstance: {fileID: 876188311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &388115102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388115098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3337063eea441124f9768599b5e6170b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 1750827421}
+  agentDoneOnGroundContact: 0
+  penalizeGroundContact: 0
+  groundContactPenalty: 0
+  touchingGround: 0
+  rewardDist: 0
 --- !u!114 &463674916 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4187849959708423420, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
@@ -605,6 +628,10 @@ PrefabInstance:
       propertyPath: checkpointsTransform
       value: 
       objectReference: {fileID: 2029666304}
+    - target: {fileID: 7202437535817915203, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8320229985974868617, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
       propertyPath: m_Name
       value: Environment (7)
@@ -616,7 +643,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6540638011856615330, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 388115102}
   m_SourcePrefab: {fileID: 100100000, guid: 29eb3767f910da342b5b7571a19b48f4, type: 3}
 --- !u!1001 &938263756
 PrefabInstance:

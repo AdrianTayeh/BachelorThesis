@@ -7,6 +7,7 @@ public class WallContact : MonoBehaviour
 {
     public ZombieAgent agent;
     public Material hitWallMat;
+    public bool touchingWall;
     public MeshRenderer wallMeshRend;
 
     private void OnCollisionEnter(Collision col)
@@ -16,7 +17,8 @@ public class WallContact : MonoBehaviour
             //Debug.Log("Agent hit wall, Contact made with: " + col.gameObject.transform.name + " Tot R: " + agent.GetCumulativeReward() + " Pos of part that collided with wall: " + col.gameObject.transform.localPosition + " vs wall pos: " + this.gameObject.transform.localPosition);
             //Debug.Log("Collided wall");
             //wallMeshRend.material = hitWallMat;
-            agent.HandleCollision(true);            
+            touchingWall = true;
+            agent.HandleCollision(false);            
         }
     }
 }
