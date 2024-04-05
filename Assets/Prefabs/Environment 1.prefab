@@ -1424,7 +1424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b2747c4b794364eb6fadb1ee1344c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchingTarget: 0
   agent: {fileID: 4187849959708423420}
 --- !u!1 &6485937436326006154
 GameObject:
@@ -2554,7 +2553,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: f343708483dc1c1428134e925f969371, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -2577,7 +2576,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 20000
   hips: {fileID: 6689514863270583903}
   chest: {fileID: 1629359361904581313}
   spine: {fileID: 1063888510894349208}

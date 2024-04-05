@@ -29,21 +29,11 @@ public class GroundContact : MonoBehaviour
 
         //if (col.transform.CompareTag(k_Ground))
         //{
-        //    agent.SetReward(0f);
-
         //    touchingGround = true;
         //    if (penalizeGroundContact)
         //    {
-        //        agent.AddReward(groundContactPenalty);
+        //        agent.HandleCollision(false);
         //    }
-
-        //    if (agentDoneOnGroundContact)
-        //    {
-        //        rewardCollected = false;
-        //        agent.EndEpisode();
-        //    }
-        //    rewardDist = 1 - (Vector3.Distance(GameObject.Find("hips").transform.position, targetPos) / Vector3.Distance(initPos, targetPos));
-        //    agent.AddReward(10 * rewardDist);
         //}
         //Debug.Log("Something collided" + this.gameObject.name);
         

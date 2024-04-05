@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 499957,
+                "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-499957.onnx",
+                "reward": null,
+                "creation_time": 1711966686.7142854,
+                "auxillary_file_paths": [
+                    "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-499957.pt"
+                ]
+            },
+            {
+                "steps": 999979,
+                "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-999979.onnx",
+                "reward": null,
+                "creation_time": 1711968184.6027339,
+                "auxillary_file_paths": [
+                    "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-999979.pt"
+                ]
+            },
+            {
+                "steps": 1499968,
+                "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-1499968.onnx",
+                "reward": null,
+                "creation_time": 1711969705.2330635,
+                "auxillary_file_paths": [
+                    "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-1499968.pt"
+                ]
+            },
+            {
+                "steps": 1999977,
+                "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-1999977.onnx",
+                "reward": null,
+                "creation_time": 1711971232.737945,
+                "auxillary_file_paths": [
+                    "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-1999977.pt"
+                ]
+            },
+            {
+                "steps": 2000041,
+                "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-2000041.onnx",
+                "reward": null,
+                "creation_time": 1711971232.7837253,
+                "auxillary_file_paths": [
+                    "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-2000041.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2000041,
+            "file_path": "results\\AdrianUpdatedColTest1\\Zombie Walker.onnx",
+            "reward": null,
+            "creation_time": 1711971232.7837253,
+            "auxillary_file_paths": [
+                "results\\AdrianUpdatedColTest1\\Zombie Walker\\Zombie Walker-2000041.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}

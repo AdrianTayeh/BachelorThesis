@@ -49,15 +49,7 @@ public class BodyPart
         bp.rb.velocity = Vector3.zero;
         bp.rb.angularVelocity = Vector3.zero;
 
-        if (bp.groundContact)
-        {
-            bp.groundContact.touchingGround = false;
-        }
 
-        if (bp.targetContact)
-        {
-            bp.targetContact.touchingTarget = false;
-        }
 
     }
 

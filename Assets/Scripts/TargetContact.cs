@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 [DisallowMultipleComponent]
 public class TargetContact : MonoBehaviour
 {
-    [Header("Detect Targets")] public bool touchingTarget;
 
     public ZombieAgent agent;
 
@@ -15,19 +14,9 @@ public class TargetContact : MonoBehaviour
     {
         if (col.gameObject.transform.IsChildOf(agent.transform))
         {
-            touchingTarget = true;
             //Debug.Log("Agent hit target, Contact made with: " + col.gameObject.transform.name + "Tot R: " + agent.GetCumulativeReward() + "Agent pos at col: " + col.gameObject.transform.localPosition + " vs target pos: " + this.gameObject.transform.localPosition);
             agent.HandleCollision(true);
             
         }
-    }
-
-    private void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.transform.IsChildOf(agent.transform))
-        {
-            touchingTarget = false;
-        }
-
     }
 }

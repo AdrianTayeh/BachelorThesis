@@ -309,8 +309,8 @@ public class ZombieAgent : Agent
 
             if (!isTarget)
             {
-                AddReward(-1f);
-                Debug.Log("Touching wall, or fell on back,  with reward: " + GetCumulativeReward());
+                SetReward(-1f);
+                Debug.Log("Touching wall with reward: " + GetCumulativeReward());
             }
             else
             {
