@@ -26,7 +26,7 @@ public class GroundContact : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        
+        /*
         if (col.transform.CompareTag(k_Ground))
         {
             agent.SetReward(0f);
@@ -45,15 +45,17 @@ public class GroundContact : MonoBehaviour
                 agent.EndEpisode();
             }
         }
-        
+        */
     }
 
 
     void OnCollisionExit(Collision other)
     {
+        /*
         if (other.transform.CompareTag(k_Ground))
         {
             touchingGround = false;
         }
+        */
     }
 }

@@ -6,6 +6,8 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System;
 using Random = UnityEngine.Random;
+using TreeEditor;
+
 public class ZombieAgent : Agent
 {
 
@@ -31,8 +33,8 @@ public class ZombieAgent : Agent
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
     float minStabilizerTorque = 1000;
     float maxStabilizerTorque = 4000;
-    [SerializeField] Stabilizer hipsStabilizer;
-    [SerializeField] Stabilizer spineStabilizer;
+    //[SerializeField] Stabilizer hipsStabilizer;
+    //[SerializeField] Stabilizer spineStabilizer;
 
     [Header("Walk Speed")]
     [Range(0.1f, 10f)]
@@ -64,6 +66,12 @@ public class ZombieAgent : Agent
     public GameObject goalTarget;
     public Transform targetStart;
 
+
+    float resetTimer = 0.2f;
+    float timer = 0;
+    bool hasCollided = false;
+    [SerializeField] Material redMaterial;
+
     OrientationCubeController orientationCube;
 
     JointDriveController jdController;
@@ -91,8 +99,8 @@ public class ZombieAgent : Agent
         jdController.SetupBodyPart(forearmR);
         jdController.SetupBodyPart(handR);
 
-        hipsStabilizer.uprightTorque = stabilizerTorque;
-        spineStabilizer.uprightTorque = stabilizerTorque;
+        //hipsStabilizer.uprightTorque = stabilizerTorque;
+        //spineStabilizer.uprightTorque = stabilizerTorque;
 
     }
 
@@ -108,9 +116,11 @@ public class ZombieAgent : Agent
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
-        UpdateOrientationObjects();
-        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        initDistance = Vector3.Distance(hips.position, target.position);
+        timer = 0; 
+
+        //UpdateOrientationObjects();
+        //TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
+        //initDistance = Vector3.Distance(hips.position, target.position);
 
     }
 
@@ -159,7 +169,9 @@ public class ZombieAgent : Agent
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
-        sensor.AddObservation(bp.groundContact.touchingGround); //Checks if bodypart is touching ground
+        //sensor.AddObservation(bp.groundContact.touchingGround); //Checks if bodypart is touching ground
+
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
 
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.velocity));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.angularVelocity));
@@ -175,19 +187,19 @@ public class ZombieAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        var cubeForward = orientationCube.transform.forward;
+        //var cubeForward = orientationCube.transform.forward;
 
-        var velGoal = cubeForward * TargetWalkingSpeed;
+        //var velGoal = cubeForward * TargetWalkingSpeed;
         var avgVel = GetAvgVelocity();
 
-        sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
+        //sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
+        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
+        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
 
-        sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
-        sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
+        //sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
+        //sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
 
-        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
+        //sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
 
         foreach (var bodyPart in jdController.bodyPartsList)
         {
@@ -236,6 +248,17 @@ public class ZombieAgent : Agent
     {
         UpdateOrientationObjects();
 
+        timer += Time.deltaTime;
+        if(timer > resetTimer)
+        {
+            hasCollided = false;
+        }
+
+        if(hips.position.y < -1)
+        {
+            OnEpisodeBegin();
+        }
+        /*
         var cubeForward = orientationCube.transform.forward;
 
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
@@ -266,8 +289,36 @@ public class ZombieAgent : Agent
 
 
         //AddReward(matchSpeedReward * lookAtTargetReward);
+        */
     }
 
+    public void HandleCollision(GameObject obj, int type)
+    {
+        if (hasCollided == false)
+        {
+            hasCollided = true;
+            if (type == 1)
+            {
+                //Debug.Log("Target Reached!");
+                SetReward(1f);
+                EndEpisode();
+            }
+            else if(type == 2)
+            {
+                //Debug.Log("Wall Contact");
+                obj.GetComponent<MeshRenderer>().material = redMaterial;
+                SetReward(-1f);
+                EndEpisode();
+
+            }
+            else if(type  == 3)
+            {
+                Debug.Log("Back touched ground!");
+                SetReward(-1f);
+                EndEpisode();
+            }
+        }
+    }
 
 
 
