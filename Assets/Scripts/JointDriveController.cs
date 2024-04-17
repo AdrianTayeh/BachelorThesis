@@ -55,12 +55,12 @@ public class BodyPart
 
 
         //connected with touching target
-        /*
+        
         if (bp.targetContact)
         {
             bp.targetContact.touchingTarget = false;
         }
-        */
+        
     }
 
     public void SetJointTargetRotation(float x, float y, float z)

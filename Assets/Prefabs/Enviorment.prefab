@@ -385,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 2786704934245299428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0.5, z: 0}
+  m_LocalPosition: {x: 4.0600004, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +575,7 @@ Transform:
   m_GameObject: {fileID: 7060265313826911110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.49999994, y: 0.5, z: 0}
+  m_LocalPosition: {x: 3.91, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b2747c4b794364eb6fadb1ee1344c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  touchingTarget: 0
   agent: {fileID: 4187849959708423420}
 --- !u!1 &8320229985974868617
 GameObject:
@@ -1484,7 +1485,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: cc4b87efa2dec7d43ba2ab6be0e2dcb4, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 876380ebbea3daf4b86ffbb52f2c263f, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker

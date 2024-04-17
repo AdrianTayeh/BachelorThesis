@@ -110,15 +110,30 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
-        float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
-        float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
-        //goalTarget.transform.position = new Vector3(x, 1f, z);
+        foreach (var bodyPart in jdController.bodyPartsDict.Values)
+        {
+            bodyPart.Reset(bodyPart);
+        }
+
+        float x, z;
+        while (true)
+        {
+            x = Random.Range(targetStart.position.x - 12f, targetStart.position.x + 12f);
+            z = Random.Range(targetStart.position.z - 12f, targetStart.position.z + 12f);
+            if ((x < targetStart.position.x - 6f || x > targetStart.position.x + 6f)
+                && (z < targetStart.position.z - 6f || z > targetStart.position.z + 6f))
+                break;
+        }
+
+
+
+        goalTarget.transform.position = new Vector3( x, targetStart.position.y, z);
 
         hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         timer = 0; 
 
-        //UpdateOrientationObjects();
+        UpdateOrientationObjects();
         //TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
         //initDistance = Vector3.Distance(hips.position, target.position);
 
@@ -294,7 +309,7 @@ public class ZombieAgent : Agent
 
     public void HandleCollision(GameObject obj, int type)
     {
-        if (hasCollided == false)
+        if (hasCollided == false && timer > resetTimer)
         {
             hasCollided = true;
             if (type == 1)

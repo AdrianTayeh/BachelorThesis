@@ -17,7 +17,6 @@ public class WallCollisionCheck : MonoBehaviour
             
             //if(collision.)
             agent.HandleCollision(this.gameObject, 2);
-            agent.EndEpisode();
         }
     }
 
