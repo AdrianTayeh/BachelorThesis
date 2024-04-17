@@ -39,9 +39,9 @@ public class ZombieAgent : Agent
     [Header("Walk Speed")]
     [Range(0.1f, 10f)]
     [SerializeField]
-    float targetWalkingSpeed = 10f;
+    float targetWalkingSpeed = 2;
     const float minWalkingSpeed = 0.1f;
-    const float maxWalkingSpeed = 10f;
+    const float maxWalkingSpeed = 2;
 
 
 
@@ -145,19 +145,7 @@ public class ZombieAgent : Agent
         orientationCube.UpdateOrientation(hips, target);      
     }
 
-    Vector3 GetAvgVelocity()
-    {
-        Vector3 velSum = Vector3.zero;
-
-        int numOfRb = 0;
-        foreach (var item in jdController.bodyPartsList)
-        {
-            numOfRb++;
-            velSum += item.rb.velocity;
-        }
-        var avgVel = velSum / numOfRb;
-        return avgVel;
-    }
+    
 
     Vector3 GetAvgPosition()
     {
@@ -173,14 +161,6 @@ public class ZombieAgent : Agent
         return avgPos;
     }
 
-    public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
-    {
-        var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
-
-        if (TargetWalkingSpeed == 0) TargetWalkingSpeed = 0.01f;
-
-        return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
-    }
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
@@ -273,7 +253,9 @@ public class ZombieAgent : Agent
         {
             OnEpisodeBegin();
         }
-        /*
+       
+
+        
         var cubeForward = orientationCube.transform.forward;
 
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
@@ -288,6 +270,8 @@ public class ZombieAgent : Agent
             );
         }
 
+        AddReward(matchSpeedReward);
+        /*
         var headForward = head.forward;
         headForward.y = 0;
 
@@ -305,6 +289,29 @@ public class ZombieAgent : Agent
 
         //AddReward(matchSpeedReward * lookAtTargetReward);
         */
+    }
+    Vector3 GetAvgVelocity()
+    {
+        Vector3 velSum = Vector3.zero;
+
+        int numOfRb = 0;
+        foreach (var item in jdController.bodyPartsList)
+        {
+            numOfRb++;
+            velSum += item.rb.velocity;
+        }
+        var avgVel = velSum / numOfRb;
+        return avgVel;
+    }
+
+    public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
+    {
+        //distance between our actual velocity and goal velocity
+        var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
+
+        //return the value on a declining sigmoid shaped curve that decays from 1 to 0
+        //This reward will approach 1 if it matches perfectly and approach zero as it deviates
+        return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
     }
 
     public void HandleCollision(GameObject obj, int type)
@@ -328,7 +335,7 @@ public class ZombieAgent : Agent
             }
             else if(type  == 3)
             {
-                Debug.Log("Back touched ground!");
+                //Debug.Log("Back touched ground!");
                 SetReward(-1f);
                 EndEpisode();
             }

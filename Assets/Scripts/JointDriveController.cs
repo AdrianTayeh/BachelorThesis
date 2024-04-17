@@ -129,11 +129,11 @@ public class JointDriveController : MonoBehaviour
         if (!bp.groundContact)
         {
             bp.groundContact = t.gameObject.AddComponent<GroundContact>();
-            bp.groundContact.agent = gameObject.GetComponent<Agent>();
+            bp.groundContact.agent = gameObject.GetComponent<ZombieAgent>();
         }
         else
         {
-            bp.groundContact.agent = gameObject.GetComponent<Agent>();
+            bp.groundContact.agent = gameObject.GetComponent<ZombieAgent>();
         }
 
         if (bp.joint)

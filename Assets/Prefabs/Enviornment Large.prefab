@@ -1197,23 +1197,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.65177435
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.27420828
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.65177435
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.27420828
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 45.634
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6784241776019183643, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1485,7 +1485,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 046083da9058e5c4283c820272fc2571, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: bed6aa03a2af24e419f2ca515204632c, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
