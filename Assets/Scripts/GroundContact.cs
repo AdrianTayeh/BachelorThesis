@@ -21,10 +21,10 @@ public class GroundContact : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
 
-        if (col.transform.CompareTag(k_Ground))
+        /*if (col.transform.CompareTag(k_Ground))
         {
             agent.HandleCollision(null, 3);
-        }
+        }*/
 
     }
 
