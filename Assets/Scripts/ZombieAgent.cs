@@ -63,8 +63,8 @@ public class ZombieAgent : Agent
 
     [Header("Target")]
     public Transform target;
-    public GameObject goalTarget;
-    public Transform targetStart;
+    //public GameObject goalTarget;
+    //public Transform targetStart;
 
 
     float resetTimer = 0.2f;
@@ -115,6 +115,7 @@ public class ZombieAgent : Agent
             bodyPart.Reset(bodyPart);
         }
 
+        /*
         float x, z;
         while (true)
         {
@@ -124,12 +125,9 @@ public class ZombieAgent : Agent
                 && (z < targetStart.position.z - 6f || z > targetStart.position.z + 6f))
                 break;
         }
-
-
-
         goalTarget.transform.position = new Vector3( x, targetStart.position.y, z);
-
-        hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+        */
+        //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         timer = 0; 
 
@@ -164,9 +162,7 @@ public class ZombieAgent : Agent
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
-        //sensor.AddObservation(bp.groundContact.touchingGround); //Checks if bodypart is touching ground
-
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
+        sensor.AddObservation(bp.groundContact.touchingGround); //Checks if bodypart is touching ground
 
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.velocity));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.angularVelocity));
@@ -186,6 +182,8 @@ public class ZombieAgent : Agent
 
         //var velGoal = cubeForward * TargetWalkingSpeed;
         var avgVel = GetAvgVelocity();
+
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
 
         //sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
         //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
@@ -249,17 +247,18 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
+        /*
         if(hips.position.y < -1)
         {
             OnEpisodeBegin();
         }
-       
+        */
 
-        
+        /*
         var cubeForward = orientationCube.transform.forward;
 
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
-
+        
         if (float.IsNaN(matchSpeedReward))
         {
             throw new ArgumentException(
@@ -269,8 +268,9 @@ public class ZombieAgent : Agent
                 $" maximumWalkingSpeed: {maxWalkingSpeed}"
             );
         }
-
+        
         AddReward(matchSpeedReward);
+        */
         /*
         var headForward = head.forward;
         headForward.y = 0;

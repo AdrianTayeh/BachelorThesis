@@ -21,21 +21,25 @@ public class GroundContact : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
 
-        /*if (col.transform.CompareTag(k_Ground))
+        if (col.transform.CompareTag(k_Ground))
         {
-            agent.HandleCollision(null, 3);
-        }*/
+            if (penalizeGroundContact)
+            {
+                touchingGround = true;
+                agent.HandleCollision(null, 3);
+            }
+        }
 
     }
 
 
     void OnCollisionExit(Collision other)
     {
-        /*
+        
         if (other.transform.CompareTag(k_Ground))
         {
             touchingGround = false;
         }
-        */
+        
     }
 }
