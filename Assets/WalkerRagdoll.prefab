@@ -370,6 +370,7 @@ MonoBehaviour:
   penalizeGroundContact: 0
   groundContactPenalty: 0
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &372882811444483645
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +660,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &718338671738508578
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,6 +897,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &858880696006140138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,6 +1184,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &965902752092632887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,6 +1474,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &1002686804990502982
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,6 +2084,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &2149944242947509674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2291,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &2406462922778445114
 GameObject:
   m_ObjectHideFlags: 0
@@ -2892,6 +2899,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &3610441596418416152
 GameObject:
   m_ObjectHideFlags: 0
@@ -3139,7 +3147,7 @@ Transform:
   m_GameObject: {fileID: 4338190890735212206}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.41250005, y: 0, z: 0}
+  m_LocalPosition: {x: -0.4125, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3316,6 +3324,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &4521426446724311777
 GameObject:
   m_ObjectHideFlags: 0
@@ -3519,6 +3528,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &4550563856646899314
 GameObject:
   m_ObjectHideFlags: 0
@@ -3808,6 +3818,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &5063774844124824036
 GameObject:
   m_ObjectHideFlags: 0
@@ -4263,6 +4274,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &5248187351185136852
 GameObject:
   m_ObjectHideFlags: 0
@@ -4834,6 +4846,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &7061190630647062790
 GameObject:
   m_ObjectHideFlags: 0
@@ -4938,6 +4951,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &7092544682389294131
 GameObject:
   m_ObjectHideFlags: 0
@@ -5141,6 +5155,7 @@ MonoBehaviour:
   penalizeGroundContact: 0
   groundContactPenalty: 0
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &7581702910941881526
 GameObject:
   m_ObjectHideFlags: 0
@@ -5300,7 +5315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8243325122151748164
 Transform:
   m_ObjectHideFlags: 0
@@ -5741,6 +5756,7 @@ MonoBehaviour:
   penalizeGroundContact: 1
   groundContactPenalty: -1
   touchingGround: 0
+  rewardDist: 0
 --- !u!1 &8872140389240441003
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,9 @@ using TreeEditor;
 
 public class ZombieAgent : Agent
 {
+    public float maxSpineAlignment = 10f;
+    public float maxChestAlignment = 10f;
+    public float maxHeadAlignment = 10f;
 
     [Header("Body Parts")]
     public Transform hips;
@@ -39,16 +42,15 @@ public class ZombieAgent : Agent
     [Header("Walk Speed")]
     [Range(0.1f, 10f)]
     [SerializeField]
-    float targetWalkingSpeed = 2;
+    float targetWalkingSpeed = 10;
     const float minWalkingSpeed = 0.1f;
-    const float maxWalkingSpeed = 2;
-
+    const float maxWalkingSpeed = 10;
 
 
     public float TargetWalkingSpeed
     {
         get { return targetWalkingSpeed; }
-        set { targetWalkingSpeed = Mathf.Clamp(value, minWalkingSpeed, maxWalkingSpeed); }
+        set { targetWalkingSpeed = Mathf.Clamp(value, 0.1f, maxWalkingSpeed); }
     }
 
     public float StabilizerTorque
@@ -59,12 +61,17 @@ public class ZombieAgent : Agent
 
     public bool randomizeWalkSpeedEachEpisode;
 
-    private Vector3 worldDirToWalk = Vector3.right;
+    private Vector3 worldDirToWalk = Vector3.forward;
 
     [Header("Target")]
     public Transform target;
-    //public GameObject goalTarget;
-    //public Transform targetStart;
+    public GameObject goalTarget;
+    public Transform targetStart;
+
+    [Header("Reward Weights")]
+    public float wv = 0.02f;
+    public float wo = 0.01f;
+    public float wh = 0.01f;
 
 
     float resetTimer = 0.2f;
@@ -114,7 +121,7 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
-
+        goalTarget.transform.position = targetStart.transform.position;
         /*
         float x, z;
         while (true)
@@ -132,8 +139,8 @@ public class ZombieAgent : Agent
         timer = 0; 
 
         UpdateOrientationObjects();
-        //TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        //initDistance = Vector3.Distance(hips.position, target.position);
+        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(0.1f, maxWalkingSpeed) : TargetWalkingSpeed;
+        initDistance = Vector3.Distance(GetAvgPosition(), target.position);
 
     }
 
@@ -178,21 +185,17 @@ public class ZombieAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        //var cubeForward = orientationCube.transform.forward;
+        var cubeForward = orientationCube.transform.forward;
 
-        //var velGoal = cubeForward * TargetWalkingSpeed;
+        var velGoal = cubeForward * TargetWalkingSpeed;
         var avgVel = GetAvgVelocity();
-
+        sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
-
-        //sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
-        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
-        //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
-
-        //sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
-        //sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
-
-        //sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
+        sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
+        sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
+        sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
 
         foreach (var bodyPart in jdController.bodyPartsList)
         {
@@ -235,6 +238,73 @@ public class ZombieAgent : Agent
         bpDict[forearmL].SetJointStrength(continuousActions[++i]);
         bpDict[armR].SetJointStrength(continuousActions[++i]);
         bpDict[forearmR].SetJointStrength(continuousActions[++i]);
+
+
+
+        //float distanceToTarget = Vector3.Distance(GetAvgPosition(), target.position);
+        //float previousDistanceToTarget = initDistance;
+        //if(distanceToTarget < previousDistanceToTarget)
+        //{
+        //    AddReward(0.1f);
+        //    initDistance = distanceToTarget;
+        //}
+
+        //float spineAlignmentReward = CalculateSpineAlignmentReward();
+        //float chestAlignmentReward = CalculateChestAlignmentReward();
+        //float headAlignmentReward = CalculateHeadAlignmentReward();
+        //AddReward(spineAlignmentReward * chestAlignmentReward * headAlignmentReward);
+    }
+
+    public float CalculateSpineAlignmentReward()
+    {
+        float spineAlignment = Vector3.Angle(hips.forward, spine.forward);
+        float spineAlignmentReward;
+
+        if(spineAlignment <= maxSpineAlignment)
+        {
+            spineAlignmentReward = 1 - (spineAlignment / maxSpineAlignment);
+        }
+        else
+        {
+            spineAlignmentReward = -1;
+        }
+        return Mathf.Clamp(spineAlignmentReward, -1f, 1f);
+
+
+    }
+
+    public float CalculateChestAlignmentReward()
+    {
+        float chestAlignment = Vector3.Angle(spine.up, chest.up);
+        float chestAlignmentReward;
+
+        if (chestAlignment <= maxChestAlignment)
+        {
+            chestAlignmentReward = 1 - (chestAlignment / maxChestAlignment);
+        }
+        else
+        {
+            chestAlignmentReward = -1f;
+        }
+
+        return Mathf.Clamp(chestAlignmentReward, -1f, 1f);
+
+    }
+
+    public float CalculateHeadAlignmentReward()
+    {
+        float headAlignment = Vector3.Angle(spine.up, head.up);
+        float headAlignmentReward;
+        if(headAlignment <= maxHeadAlignment)
+        {
+            headAlignmentReward = 1 - (headAlignment / maxHeadAlignment);
+        }
+        else
+        {
+            headAlignmentReward = -1f;
+        }
+
+        return Mathf.Clamp(headAlignmentReward, -1f, 1f);
     }
 
     private void FixedUpdate()
@@ -247,18 +317,16 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
-        /*
+        
         if(hips.position.y < -1)
         {
             OnEpisodeBegin();
         }
-        */
 
-        /*
+
         var cubeForward = orientationCube.transform.forward;
-
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
-        
+
         if (float.IsNaN(matchSpeedReward))
         {
             throw new ArgumentException(
@@ -268,14 +336,10 @@ public class ZombieAgent : Agent
                 $" maximumWalkingSpeed: {maxWalkingSpeed}"
             );
         }
-        
-        AddReward(matchSpeedReward);
-        */
-        /*
+
         var headForward = head.forward;
         headForward.y = 0;
-
-        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1)*0.5f;
+        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1) * 0.5f;
 
         if (float.IsNaN(lookAtTargetReward))
         {
@@ -286,9 +350,8 @@ public class ZombieAgent : Agent
             );
         }
 
+        AddReward(matchSpeedReward * lookAtTargetReward);
 
-        //AddReward(matchSpeedReward * lookAtTargetReward);
-        */
     }
     Vector3 GetAvgVelocity()
     {
@@ -314,6 +377,15 @@ public class ZombieAgent : Agent
         return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
     }
 
+    private void SpawnTarget()
+    {
+        goalTarget.transform.position = new Vector3(goalTarget.transform.position.x + 0.5f,goalTarget.transform.position.y, hips.position.z);
+        if (goalTarget.transform.position.x >= targetStart.transform.position.x + 14 || goalTarget.transform.position.x <= targetStart.transform.position.x - 14)
+        {
+            EndEpisode();
+        }
+    }
+
     public void HandleCollision(GameObject obj, int type)
     {
         if (hasCollided == false && timer > resetTimer)
@@ -321,9 +393,9 @@ public class ZombieAgent : Agent
             hasCollided = true;
             if (type == 1)
             {
-                //Debug.Log("Target Reached!");
-                SetReward(1f);
-                EndEpisode();
+                Debug.Log("Target Reached!");
+                AddReward(1f);
+                SpawnTarget();
             }
             else if(type == 2)
             {

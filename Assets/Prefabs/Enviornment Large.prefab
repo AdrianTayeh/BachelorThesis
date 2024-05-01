@@ -385,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 2786704934245299428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -3.49, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +575,7 @@ Transform:
   m_GameObject: {fileID: 7060265313826911110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.29, y: 0.5, z: 0.06}
+  m_LocalPosition: {x: -3.49, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -702,73 +702,6 @@ Transform:
   - {fileID: 6613866862124026736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8774248246393376904
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9129424439236389098}
-  - component: {fileID: 4973371513908029119}
-  - component: {fileID: 6539324191301074084}
-  m_Layer: 0
-  m_Name: backpack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &9129424439236389098
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8774248246393376904}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.019, y: 0.025, z: 0.108}
-  m_LocalScale: {x: 1, y: 0.32554, z: 0.38844}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1629359361904581313}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!65 &4973371513908029119
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8774248246393376904}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.26928326, y: 1, z: 1}
-  m_Center: {x: -0.36535835, y: 0.000000021777055, z: -0.000000015909007}
---- !u!114 &6539324191301074084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8774248246393376904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9db18d78f1190a44489878426242cdee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 0}
 --- !u!1 &9212750366554099525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,6 +1060,10 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.00000017881393
       objectReference: {fileID: 0}
+    - target: {fileID: 4465135593579090821, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: m_Mass
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4579892987239958352, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: agent
       value: 
@@ -1345,10 +1282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1703105403977612820, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9129424439236389098}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3842259319115666299, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       insertIndex: -1
@@ -1476,7 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 228
+    VectorObservationSize: 246
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 39
@@ -1485,7 +1419,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: fbc41db4a01b750478608966f322c12b, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 0cca98c73906a6041aa92421efb8b3ac, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -1509,6 +1443,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
+  maxSpineAlignment: 10
+  maxChestAlignment: 10
+  maxHeadAlignment: 10
   hips: {fileID: 6689514863270583903}
   chest: {fileID: 1629359361904581313}
   spine: {fileID: 1063888510894349208}
@@ -1529,6 +1466,11 @@ MonoBehaviour:
   targetWalkingSpeed: 2
   randomizeWalkSpeedEachEpisode: 1
   target: {fileID: 5814893315911968102}
+  goalTarget: {fileID: 7060265313826911110}
+  targetStart: {fileID: 6613866862124026736}
+  wv: 0.02
+  wo: 0.01
+  wh: 0.01
   redMaterial: {fileID: 2100000, guid: f176ea7815ca3cc4384c27890fd62bfe, type: 2}
 --- !u!114 &107826103244318973
 MonoBehaviour:
