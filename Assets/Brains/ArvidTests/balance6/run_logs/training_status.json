@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 3499993,
+                "file_path": "results\\balance6\\Zombie Walker\\Zombie Walker-3499993.onnx",
+                "reward": -1.0,
+                "creation_time": 1713803287.3358595,
+                "auxillary_file_paths": [
+                    "results\\balance6\\Zombie Walker\\Zombie Walker-3499993.pt"
+                ]
+            },
+            {
+                "steps": 3999996,
+                "file_path": "results\\balance6\\Zombie Walker\\Zombie Walker-3999996.onnx",
+                "reward": -1.0,
+                "creation_time": 1713804149.6283987,
+                "auxillary_file_paths": [
+                    "results\\balance6\\Zombie Walker\\Zombie Walker-3999996.pt"
+                ]
+            },
+            {
+                "steps": 4499994,
+                "file_path": "results\\balance6\\Zombie Walker\\Zombie Walker-4499994.onnx",
+                "reward": null,
+                "creation_time": 1713804980.7001326,
+                "auxillary_file_paths": [
+                    "results\\balance6\\Zombie Walker\\Zombie Walker-4499994.pt"
+                ]
+            },
+            {
+                "steps": 4999956,
+                "file_path": "results\\balance6\\Zombie Walker\\Zombie Walker-4999956.onnx",
+                "reward": null,
+                "creation_time": 1713805771.3691561,
+                "auxillary_file_paths": [
+                    "results\\balance6\\Zombie Walker\\Zombie Walker-4999956.pt"
+                ]
+            },
+            {
+                "steps": 5000020,
+                "file_path": "results\\balance6\\Zombie Walker\\Zombie Walker-5000020.onnx",
+                "reward": null,
+                "creation_time": 1713805771.3952305,
+                "auxillary_file_paths": [
+                    "results\\balance6\\Zombie Walker\\Zombie Walker-5000020.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5000020,
+            "file_path": "results\\balance6\\Zombie Walker.onnx",
+            "reward": null,
+            "creation_time": 1713805771.3952305,
+            "auxillary_file_paths": [
+                "results\\balance6\\Zombie Walker\\Zombie Walker-5000020.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}

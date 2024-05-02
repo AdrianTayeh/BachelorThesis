@@ -63,7 +63,7 @@ public class ZombieAgent : Agent
 
     [Header("Target")]
     public Transform target;
-    //public GameObject goalTarget;
+    public GameObject goalTarget;
     //public Transform targetStart;
 
 
@@ -77,6 +77,7 @@ public class ZombieAgent : Agent
     JointDriveController jdController;
 
     private float  initDistance;
+
 
     public override void Initialize()
     {
@@ -129,11 +130,12 @@ public class ZombieAgent : Agent
         */
         //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
-        timer = 0; 
+        timer = 0;
 
         UpdateOrientationObjects();
         //TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        //initDistance = Vector3.Distance(hips.position, target.position);
+        Vector3 avgFeetPos = (footL.position + footR.position) / 2f;
+        initDistance = Vector3.Distance(avgFeetPos, target.position);
 
     }
 
@@ -235,6 +237,8 @@ public class ZombieAgent : Agent
         bpDict[forearmL].SetJointStrength(continuousActions[++i]);
         bpDict[armR].SetJointStrength(continuousActions[++i]);
         bpDict[forearmR].SetJointStrength(continuousActions[++i]);
+
+        //hfReward += CalculateHeadHeightReward();
     }
 
     private void FixedUpdate()
@@ -290,6 +294,21 @@ public class ZombieAgent : Agent
         //AddReward(matchSpeedReward * lookAtTargetReward);
         */
     }
+
+    float CalculateHeadHeightReward()
+    {
+        Vector3 avgFeetPos = (footL.position + footR.position) / 2f;
+        float headFeetDistance = Vector3.Distance(avgFeetPos, head.position);
+        float maxHeadFeetDistance = 1.3f;
+        /*if (headFeetDistance < maxHeadFeetDistance)
+            return -0.5f;
+        else 
+            return 0.5f;*/
+        float normalizeDistance = 1f - Mathf.Clamp(headFeetDistance / maxHeadFeetDistance, 0f, 1f);
+        float headHeightReward = (normalizeDistance * 2f) - 1f;
+
+        return headHeightReward * 0.01f;
+    }
     Vector3 GetAvgVelocity()
     {
         Vector3 velSum = Vector3.zero;
@@ -318,11 +337,16 @@ public class ZombieAgent : Agent
     {
         if (hasCollided == false && timer > resetTimer)
         {
+            Vector3 avgFeetPos = (footL.position + footR.position) / 2f;
+            float finalDistance = Vector3.Distance(avgFeetPos, target.position);
+            float distanceReward = 1 - (finalDistance / initDistance);
             hasCollided = true;
             if (type == 1)
             {
-                //Debug.Log("Target Reached!");
+                //Debug.Log("Target Reached!"); 
                 SetReward(1f);
+                AddReward(distanceReward); 
+                Debug.Log("total reward when reaching target" + GetCumulativeReward());
                 EndEpisode();
             }
             else if(type == 2)
@@ -330,6 +354,8 @@ public class ZombieAgent : Agent
                 //Debug.Log("Wall Contact");
                 obj.GetComponent<MeshRenderer>().material = redMaterial;
                 SetReward(-1f);
+                AddReward(distanceReward);
+                Debug.Log("total reward when colliding with wall" + GetCumulativeReward());
                 EndEpisode();
 
             }
@@ -337,6 +363,8 @@ public class ZombieAgent : Agent
             {
                 //Debug.Log("Back touched ground!");
                 SetReward(-1f);
+                AddReward(distanceReward);
+                //Debug.Log("total reward when falling" + GetCumulativeReward());
                 EndEpisode();
             }
         }

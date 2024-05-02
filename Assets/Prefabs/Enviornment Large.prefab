@@ -385,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 2786704934245299428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -8.77, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +575,7 @@ Transform:
   m_GameObject: {fileID: 7060265313826911110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.29, y: 0.5, z: 0.06}
+  m_LocalPosition: {x: -2.48, y: 0.5, z: 0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1127,6 +1127,10 @@ PrefabInstance:
       propertyPath: m_ConnectedAnchor.z
       value: -0.00000017881393
       objectReference: {fileID: 0}
+    - target: {fileID: 4465135593579090821, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
+      propertyPath: m_Mass
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4579892987239958352, guid: 86eb1899d367cbd438b6e7a76c944ba8, type: 3}
       propertyPath: agent
       value: 
@@ -1485,7 +1489,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: fbc41db4a01b750478608966f322c12b, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: c304696dffbc21947ac089c663068047, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
@@ -1529,6 +1533,7 @@ MonoBehaviour:
   targetWalkingSpeed: 2
   randomizeWalkSpeedEachEpisode: 1
   target: {fileID: 5814893315911968102}
+  goalTarget: {fileID: 0}
   redMaterial: {fileID: 2100000, guid: f176ea7815ca3cc4384c27890fd62bfe, type: 2}
 --- !u!114 &107826103244318973
 MonoBehaviour:
