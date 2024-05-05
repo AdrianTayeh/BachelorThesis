@@ -390,6 +390,7 @@ public class ZombieAgent : Agent
     {
         if (hasCollided == false && timer > resetTimer)
         {
+            Debug.Log("Reward 1: " + GetCumulativeReward());
             hasCollided = true;
             if (type == 1)
             {
