@@ -185,7 +185,7 @@ public class ZombieAgent : Agent
         //var velGoal = cubeForward * TargetWalkingSpeed;
         var avgVel = GetAvgVelocity();
 
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position));
 
         //sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
         //sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
