@@ -32,6 +32,8 @@ public class ZombieAgent : Agent
     public Transform forearmR;
     public Transform handR;
 
+    BodyPart headBP;
+
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
     float minStabilizerTorque = 1000;
@@ -349,8 +351,18 @@ public class ZombieAgent : Agent
                 $" head.forward: {head.forward}"
             );
         }
+        
 
         AddReward(matchSpeedReward * lookAtTargetReward);
+
+        float headSpeed = headBP.rb.velocity.magnitude;
+        float bodySpeed = GetAvgVelocity().magnitude;
+
+        if (headSpeed > bodySpeed)
+        {
+            float excessSpeed = headSpeed - bodySpeed;
+            AddReward(Mathf.Clamp(-excessSpeed * 0.1f, -1f, 1f));
+        }
 
     }
     Vector3 GetAvgVelocity()
@@ -358,10 +370,14 @@ public class ZombieAgent : Agent
         Vector3 velSum = Vector3.zero;
 
         int numOfRb = 0;
-        foreach (var item in jdController.bodyPartsList)
+        foreach (BodyPart bodyPart in jdController.bodyPartsList)
         {
+            if (bodyPart.rb.transform == head)
+            {
+                headBP = bodyPart;
+            }
             numOfRb++;
-            velSum += item.rb.velocity;
+            velSum += bodyPart.rb.velocity;
         }
         var avgVel = velSum / numOfRb;
         return avgVel;
@@ -390,12 +406,12 @@ public class ZombieAgent : Agent
     {
         if (hasCollided == false && timer > resetTimer)
         {
-            Debug.Log("Reward 1: " + GetCumulativeReward());
+            
             hasCollided = true;
             if (type == 1)
             {
                 Debug.Log("Target Reached!");
-                AddReward(1f);
+                AddReward(10f);
                 SpawnTarget();
             }
             else if(type == 2)

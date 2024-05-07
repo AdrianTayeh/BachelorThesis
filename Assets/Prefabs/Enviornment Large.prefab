@@ -1419,7 +1419,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 70003f56cd786ea4490333421dfd07a2, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 5265e92ad1cafaa47ae916e27afa8435, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: Zombie Walker
