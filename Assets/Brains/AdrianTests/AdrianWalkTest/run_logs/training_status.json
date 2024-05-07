@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 28499489,
+                "file_path": "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-28499489.onnx",
+                "reward": 256.6023795034296,
+                "creation_time": 1715065338.1209774,
+                "auxillary_file_paths": [
+                    "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-28499489.pt"
+                ]
+            },
+            {
+                "steps": 28999628,
+                "file_path": "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-28999628.onnx",
+                "reward": 327.9270667407824,
+                "creation_time": 1715065969.1803658,
+                "auxillary_file_paths": [
+                    "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-28999628.pt"
+                ]
+            },
+            {
+                "steps": 29499362,
+                "file_path": "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-29499362.onnx",
+                "reward": 152.1112938637429,
+                "creation_time": 1715066598.7198231,
+                "auxillary_file_paths": [
+                    "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-29499362.pt"
+                ]
+            },
+            {
+                "steps": 29999248,
+                "file_path": "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-29999248.onnx",
+                "reward": 299.0785660970779,
+                "creation_time": 1715067229.4086828,
+                "auxillary_file_paths": [
+                    "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-29999248.pt"
+                ]
+            },
+            {
+                "steps": 30000248,
+                "file_path": "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-30000248.onnx",
+                "reward": 314.24457430285076,
+                "creation_time": 1715067229.516708,
+                "auxillary_file_paths": [
+                    "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-30000248.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 30000248,
+            "file_path": "results\\AdrianWalkTest\\Zombie Walker.onnx",
+            "reward": 314.24457430285076,
+            "creation_time": 1715067229.516708,
+            "auxillary_file_paths": [
+                "results\\AdrianWalkTest\\Zombie Walker\\Zombie Walker-30000248.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}

@@ -46,6 +46,7 @@ public class ZombieAgent : Agent
     const float minWalkingSpeed = 0.1f;
     const float maxWalkingSpeed = 10;
 
+    float previousDistance;
 
     public float TargetWalkingSpeed
     {
@@ -76,6 +77,7 @@ public class ZombieAgent : Agent
 
     float resetTimer = 0.2f;
     float timer = 0;
+    float feetTimer = 0f;
     bool hasCollided = false;
     [SerializeField] Material redMaterial;
 
@@ -136,12 +138,13 @@ public class ZombieAgent : Agent
         */
         //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
-        timer = 0; 
+        timer = 0;
+        feetTimer = 0f;
 
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(0.1f, maxWalkingSpeed) : TargetWalkingSpeed;
         initDistance = Vector3.Distance(GetAvgPosition(), target.position);
-
+        previousDistance = Vector3.Distance((footR.position + footL.position)/2f, target.position);
     }
 
     void UpdateOrientationObjects()
@@ -169,14 +172,18 @@ public class ZombieAgent : Agent
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
-        sensor.AddObservation(bp.groundContact.touchingGround); //Checks if bodypart is touching ground
+        //GROUND CHECK
+        sensor.AddObservation(bp.groundContact.touchingGround); // Is this bp touching the ground
 
+        //Get velocities in the context of our orientation cube's space
+        //Note: You can get these velocities in world space as well but it may not train as well.
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.velocity));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.angularVelocity));
 
+        //Get position relative to hips in the context of our orientation cube's space
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(bp.rb.position - hips.position));
 
-        if(bp.rb.transform != hips && bp.rb.transform != handL && bp.rb.transform != handR)
+        if (bp.rb.transform != hips && bp.rb.transform != handL && bp.rb.transform != handR)
         {
             sensor.AddObservation(bp.rb.transform.localRotation);
             sensor.AddObservation(bp.currentStrength / jdController.maxJointForceLimit);
@@ -187,14 +194,23 @@ public class ZombieAgent : Agent
     {
         var cubeForward = orientationCube.transform.forward;
 
+        //velocity we want to match
         var velGoal = cubeForward * TargetWalkingSpeed;
+        //ragdoll's avg vel
         var avgVel = GetAvgVelocity();
+
+        //current ragdoll velocity. normalized
         sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
+        //avg body vel relative to cube
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
+        //vel goal relative to cube
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
-        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
+
+        //rotation deltas
         sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
         sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
+
+        //Position of target position relative to cube
         sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
 
         foreach (var bodyPart in jdController.bodyPartsList)
@@ -225,6 +241,7 @@ public class ZombieAgent : Agent
         bpDict[forearmR].SetJointTargetRotation(continuousActions[++i], 0, 0);
         bpDict[head].SetJointTargetRotation(continuousActions[++i], continuousActions[++i], 0);
 
+        //update joint strength settings
         bpDict[chest].SetJointStrength(continuousActions[++i]);
         bpDict[spine].SetJointStrength(continuousActions[++i]);
         bpDict[head].SetJointStrength(continuousActions[++i]);
@@ -238,80 +255,31 @@ public class ZombieAgent : Agent
         bpDict[forearmL].SetJointStrength(continuousActions[++i]);
         bpDict[armR].SetJointStrength(continuousActions[++i]);
         bpDict[forearmR].SetJointStrength(continuousActions[++i]);
-
-
-
-        //float distanceToTarget = Vector3.Distance(GetAvgPosition(), target.position);
-        //float previousDistanceToTarget = initDistance;
-        //if(distanceToTarget < previousDistanceToTarget)
-        //{
-        //    AddReward(0.1f);
-        //    initDistance = distanceToTarget;
-        //}
-
-        //float spineAlignmentReward = CalculateSpineAlignmentReward();
-        //float chestAlignmentReward = CalculateChestAlignmentReward();
-        //float headAlignmentReward = CalculateHeadAlignmentReward();
-        //AddReward(spineAlignmentReward * chestAlignmentReward * headAlignmentReward);
     }
-
-    public float CalculateSpineAlignmentReward()
-    {
-        float spineAlignment = Vector3.Angle(hips.forward, spine.forward);
-        float spineAlignmentReward;
-
-        if(spineAlignment <= maxSpineAlignment)
+    public void CalculateFeetDistanceReward()
+    {      
+        if(feetTimer >= 3f)
         {
-            spineAlignmentReward = 1 - (spineAlignment / maxSpineAlignment);
+            float currentDistance = Vector3.Distance((footR.position + footL.position) / 2f, target.position);
+            if (Mathf.Abs(currentDistance - previousDistance) >= 0.5f)
+            {
+                AddReward(Mathf.Clamp01(1f - (currentDistance / previousDistance)));
+            }
+            else if (Mathf.Abs(currentDistance - previousDistance) < 0.5f)
+            {
+                AddReward(-1f);
+                EndEpisode();
+            }
+            feetTimer = 0;
+            previousDistance = currentDistance;
         }
-        else
-        {
-            spineAlignmentReward = -1;
-        }
-        return Mathf.Clamp(spineAlignmentReward, -1f, 1f);
-
-
     }
-
-    public float CalculateChestAlignmentReward()
-    {
-        float chestAlignment = Vector3.Angle(spine.up, chest.up);
-        float chestAlignmentReward;
-
-        if (chestAlignment <= maxChestAlignment)
-        {
-            chestAlignmentReward = 1 - (chestAlignment / maxChestAlignment);
-        }
-        else
-        {
-            chestAlignmentReward = -1f;
-        }
-
-        return Mathf.Clamp(chestAlignmentReward, -1f, 1f);
-
-    }
-
-    public float CalculateHeadAlignmentReward()
-    {
-        float headAlignment = Vector3.Angle(spine.up, head.up);
-        float headAlignmentReward;
-        if(headAlignment <= maxHeadAlignment)
-        {
-            headAlignmentReward = 1 - (headAlignment / maxHeadAlignment);
-        }
-        else
-        {
-            headAlignmentReward = -1f;
-        }
-
-        return Mathf.Clamp(headAlignmentReward, -1f, 1f);
-    }
-
     private void FixedUpdate()
     {
         UpdateOrientationObjects();
 
         timer += Time.deltaTime;
+        feetTimer += Time.deltaTime;
         if(timer > resetTimer)
         {
             hasCollided = false;
@@ -323,7 +291,7 @@ public class ZombieAgent : Agent
             OnEpisodeBegin();
         }
 
-
+        CalculateFeetDistanceReward();
         var cubeForward = orientationCube.transform.forward;
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
 
