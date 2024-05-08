@@ -70,6 +70,8 @@ public class ZombieAgent : Agent
     public GameObject goalTarget;
     public Transform targetStart;
 
+    public float spawnRadius = 12;
+
     [Header("Reward Weights")]
     public float wv = 0.02f;
     public float wo = 0.01f;
@@ -123,7 +125,10 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
-        goalTarget.transform.position = targetStart.transform.position;
+        //goalTarget.transform.position = targetStart.transform.position;
+
+        MoveTargetToRandomPosition();
+
         /*
         float x, z;
         while (true)
@@ -136,12 +141,12 @@ public class ZombieAgent : Agent
         }
         goalTarget.transform.position = new Vector3( x, targetStart.position.y, z);
         */
-        //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+        hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         timer = 0; 
 
         UpdateOrientationObjects();
-        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(0.1f, maxWalkingSpeed) : TargetWalkingSpeed;
+        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(1f, maxWalkingSpeed) : TargetWalkingSpeed;
         initDistance = Vector3.Distance(GetAvgPosition(), target.position);
 
     }
@@ -152,7 +157,13 @@ public class ZombieAgent : Agent
         orientationCube.UpdateOrientation(hips, target);      
     }
 
-    
+    public void MoveTargetToRandomPosition()
+    {
+        Vector3 newTargetPos = targetStart.position + (Random.insideUnitSphere * spawnRadius);
+        newTargetPos.y = targetStart.position.y;
+        target.position = newTargetPos;
+    }
+
 
     Vector3 GetAvgPosition()
     {
@@ -241,72 +252,6 @@ public class ZombieAgent : Agent
         bpDict[armR].SetJointStrength(continuousActions[++i]);
         bpDict[forearmR].SetJointStrength(continuousActions[++i]);
 
-
-
-        //float distanceToTarget = Vector3.Distance(GetAvgPosition(), target.position);
-        //float previousDistanceToTarget = initDistance;
-        //if(distanceToTarget < previousDistanceToTarget)
-        //{
-        //    AddReward(0.1f);
-        //    initDistance = distanceToTarget;
-        //}
-
-        //float spineAlignmentReward = CalculateSpineAlignmentReward();
-        //float chestAlignmentReward = CalculateChestAlignmentReward();
-        //float headAlignmentReward = CalculateHeadAlignmentReward();
-        //AddReward(spineAlignmentReward * chestAlignmentReward * headAlignmentReward);
-    }
-
-    public float CalculateSpineAlignmentReward()
-    {
-        float spineAlignment = Vector3.Angle(hips.forward, spine.forward);
-        float spineAlignmentReward;
-
-        if(spineAlignment <= maxSpineAlignment)
-        {
-            spineAlignmentReward = 1 - (spineAlignment / maxSpineAlignment);
-        }
-        else
-        {
-            spineAlignmentReward = -1;
-        }
-        return Mathf.Clamp(spineAlignmentReward, -1f, 1f);
-
-
-    }
-
-    public float CalculateChestAlignmentReward()
-    {
-        float chestAlignment = Vector3.Angle(spine.up, chest.up);
-        float chestAlignmentReward;
-
-        if (chestAlignment <= maxChestAlignment)
-        {
-            chestAlignmentReward = 1 - (chestAlignment / maxChestAlignment);
-        }
-        else
-        {
-            chestAlignmentReward = -1f;
-        }
-
-        return Mathf.Clamp(chestAlignmentReward, -1f, 1f);
-
-    }
-
-    public float CalculateHeadAlignmentReward()
-    {
-        float headAlignment = Vector3.Angle(spine.up, head.up);
-        float headAlignmentReward;
-        if(headAlignment <= maxHeadAlignment)
-        {
-            headAlignmentReward = 1 - (headAlignment / maxHeadAlignment);
-        }
-        else
-        {
-            headAlignmentReward = -1f;
-        }
-
-        return Mathf.Clamp(headAlignmentReward, -1f, 1f);
     }
 
     private void FixedUpdate()
@@ -412,7 +357,8 @@ public class ZombieAgent : Agent
             {
                 Debug.Log("Target Reached!");
                 AddReward(10f);
-                SpawnTarget();
+                //SpawnTarget();
+                MoveTargetToRandomPosition();
             }
             else if(type == 2)
             {
