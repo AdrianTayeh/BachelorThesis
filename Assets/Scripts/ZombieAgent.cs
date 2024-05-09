@@ -37,6 +37,7 @@ public class ZombieAgent : Agent
 
     BodyPart headBP;
     BodyPart thighRBP;
+    BodyPart upperArmRBP;
 
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
@@ -85,6 +86,8 @@ public class ZombieAgent : Agent
     float resetTimer = 0.2f;
     float timer = 0;
     bool hasCollided = false;
+
+    float distanceRewardTimer;
     [SerializeField] Material redMaterial;
 
     OrientationCubeController orientationCube;
@@ -128,6 +131,10 @@ public class ZombieAgent : Agent
             {
                 headBP = bodyPart;
             }
+            if (bodyPart.rb.transform == armR)
+            {
+                upperArmRBP = bodyPart;
+            }
         }
 
         //RemoveLimb(thighRBP);
@@ -143,9 +150,9 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
-        //goalTarget.transform.position = targetStart.transform.position;
+        goalTarget.transform.position = targetStart.transform.position;
 
-        MoveTargetToRandomPosition();
+        //MoveTargetToRandomPosition();
 
         /*
         float x, z;
@@ -161,7 +168,8 @@ public class ZombieAgent : Agent
         */
         //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
-        timer = 0; 
+        timer = 0;
+        distanceRewardTimer = 0;
 
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(1f, maxWalkingSpeed) : TargetWalkingSpeed;
@@ -298,8 +306,17 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
-        
-        if(hips.position.y < -1)
+        distanceRewardTimer += Time.deltaTime;
+        if (distanceRewardTimer >= 0.5f)
+        {
+            float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
+            float rewardDist = 1 - (currentDistance / initDistance);
+            AddReward(rewardDist);
+            distanceRewardTimer = 0f;
+        }
+
+
+        if (hips.position.y < -1)
         {
             OnEpisodeBegin();
         }
@@ -334,7 +351,7 @@ public class ZombieAgent : Agent
 
         AddReward(matchSpeedReward * lookAtTargetReward);
 
-        
+        /*
         float headSpeed = headBP.rb.velocity.magnitude;
         float bodySpeed = GetAvgVelocity().magnitude;
 
@@ -343,7 +360,9 @@ public class ZombieAgent : Agent
             float excessSpeed = headSpeed - bodySpeed;
             AddReward(Mathf.Clamp(-excessSpeed * 0.1f, -1f, 1f));
         }
-        
+        */
+
+
 
     }
     Vector3 GetAvgVelocity()
@@ -392,9 +411,9 @@ public class ZombieAgent : Agent
             if (type == 1)
             {
                 Debug.Log("Target Reached!");
-                AddReward(10f);
-                //SpawnTarget();
-                MoveTargetToRandomPosition();
+                AddReward(1f);
+                SpawnTarget();
+                //MoveTargetToRandomPosition();
             }
             else if(type == 2)
             {
