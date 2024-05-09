@@ -137,7 +137,7 @@ public class ZombieAgent : Agent
             }
         }
 
-        //RemoveLimb(thighRBP);
+        RemoveLimb(thighRBP);
     }
 
     public override void OnEpisodeBegin()
