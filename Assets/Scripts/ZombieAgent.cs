@@ -7,6 +7,9 @@ using Unity.MLAgents.Sensors;
 using System;
 using Random = UnityEngine.Random;
 using TreeEditor;
+using Unity.Barracuda;
+using Unity.MLAgents.Policies;
+using Unity.Burst.CompilerServices;
 
 public class ZombieAgent : Agent
 {
@@ -33,6 +36,7 @@ public class ZombieAgent : Agent
     public Transform handR;
 
     BodyPart headBP;
+    BodyPart thighRBP;
 
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
@@ -113,6 +117,20 @@ public class ZombieAgent : Agent
         //hipsStabilizer.uprightTorque = stabilizerTorque;
         //spineStabilizer.uprightTorque = stabilizerTorque;
 
+        foreach (BodyPart bodyPart in jdController.bodyPartsList)
+        {
+            if (bodyPart.rb.transform == thighR)
+            {
+                 thighRBP = bodyPart;
+            }
+
+            if (bodyPart.rb.transform == head)
+            {
+                headBP = bodyPart;
+            }
+        }
+
+        //RemoveLimb(thighRBP);
     }
 
     public override void OnEpisodeBegin()
@@ -141,7 +159,7 @@ public class ZombieAgent : Agent
         }
         goalTarget.transform.position = new Vector3( x, targetStart.position.y, z);
         */
-        hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+        //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         timer = 0; 
 
@@ -162,6 +180,22 @@ public class ZombieAgent : Agent
         Vector3 newTargetPos = targetStart.position + (Random.insideUnitSphere * spawnRadius);
         newTargetPos.y = targetStart.position.y;
         target.position = newTargetPos;
+    }
+
+    public void RemoveLimb(BodyPart limb) // add string as parameter and NNmodel
+    {
+        limb.rb.mass = 0f;
+        limb.rb.gameObject.GetComponent<Collider>().enabled = false;
+        Collider[] cs = limb.rb.gameObject.GetComponentsInChildren<Collider>();
+        foreach (Collider c in cs)
+            c.enabled = false;
+        limb.rb.gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+        Renderer[] rs = limb.rb.gameObject.GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rs)
+            r.enabled = false;
+
+        //SetModel("Zombie Walker", brain, InferenceDevice.Burst);
+
     }
 
 
@@ -300,6 +334,7 @@ public class ZombieAgent : Agent
 
         AddReward(matchSpeedReward * lookAtTargetReward);
 
+        
         float headSpeed = headBP.rb.velocity.magnitude;
         float bodySpeed = GetAvgVelocity().magnitude;
 
@@ -308,6 +343,7 @@ public class ZombieAgent : Agent
             float excessSpeed = headSpeed - bodySpeed;
             AddReward(Mathf.Clamp(-excessSpeed * 0.1f, -1f, 1f));
         }
+        
 
     }
     Vector3 GetAvgVelocity()

@@ -20,7 +20,7 @@ public class GroundContact : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-
+        
         if (col.transform.CompareTag(k_Ground))
         {
             if (penalizeGroundContact)
@@ -29,7 +29,7 @@ public class GroundContact : MonoBehaviour
                 agent.HandleCollision(null, 3);
             }
         }
-
+        
     }
 
 
