@@ -16,7 +16,7 @@ public class GroundContact : MonoBehaviour
     public bool touchingGround;
     const string k_Ground = "ground"; // Tag of ground object.
     public float rewardDist;
-    private bool rewardCollected = false;
+    //private bool rewardCollected = false;
 
     void OnCollisionEnter(Collision col)
     {

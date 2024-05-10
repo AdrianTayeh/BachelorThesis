@@ -39,6 +39,7 @@ public class ZombieAgent : Agent
     BodyPart thighRBP;
     BodyPart upperArmRBP;
     BodyPart thighLBP;
+    BodyPart shinLBP;
 
 
     [Header("Stabilizer")]
@@ -131,7 +132,6 @@ public class ZombieAgent : Agent
             {
                  thighRBP = bodyPart;
             }
-
             if (bodyPart.rb.transform == head)
             {
                 headBP = bodyPart;
@@ -144,9 +144,13 @@ public class ZombieAgent : Agent
             {
                 thighLBP = bodyPart;
             }
+            if(bodyPart.rb.transform == shinL)
+            {
+                shinLBP = bodyPart;
+            }
         }
 
-        RemoveLimb(thighRBP);
+        RemoveLimb(shinLBP);
     }
 
     public override void OnEpisodeBegin()
@@ -315,9 +319,9 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
-        float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
-        float rewardDist = 1 - (currentDistance / initDistance);
-        AddReward(rewardDist);
+        //float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
+        //float rewardDist = 1 - (currentDistance / initDistance);
+        //AddReward(rewardDist);
 
         if (hips.position.y < -1)
         {
@@ -338,7 +342,7 @@ public class ZombieAgent : Agent
             );
         }
 
-        var headForward = head.forward;
+        var headForward = head.up; //changed from forward to up
         headForward.y = 0;
         var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1) * 0.5f;
 
@@ -347,12 +351,19 @@ public class ZombieAgent : Agent
             throw new ArgumentException(
                 "NaN in lookAtTargetReward.\n" +
                 $" cubeForward: {cubeForward}\n" +
-                $" head.forward: {head.forward}"
+                $" head.forward: {head.up}" //changed from forward to up
             );
         }
         
 
         AddReward(matchSpeedReward * lookAtTargetReward);
+
+
+        float distanceHead = Vector3.Distance(head.position, target.position);
+        float distanceHip = Vector3.Distance(hips.position, target.position);
+        float distanceValue = distanceHip - distanceHead;
+        if(distanceHip <= distanceHead + 0.1f)
+            AddReward(Mathf.Clamp(distanceValue * 0.01f, -1f, 1f));
 
         /*
         float headSpeed = headBP.rb.velocity.magnitude;

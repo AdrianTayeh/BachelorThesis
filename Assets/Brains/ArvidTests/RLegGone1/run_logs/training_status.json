@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 23499855,
+                "file_path": "results\\RLegGone1\\Zombie Walker\\Zombie Walker-23499855.onnx",
+                "reward": 17.46721315383911,
+                "creation_time": 1715319258.5314257,
+                "auxillary_file_paths": [
+                    "results\\RLegGone1\\Zombie Walker\\Zombie Walker-23499855.pt"
+                ]
+            },
+            {
+                "steps": 23999645,
+                "file_path": "results\\RLegGone1\\Zombie Walker\\Zombie Walker-23999645.onnx",
+                "reward": 16.378106410686787,
+                "creation_time": 1715319622.404952,
+                "auxillary_file_paths": [
+                    "results\\RLegGone1\\Zombie Walker\\Zombie Walker-23999645.pt"
+                ]
+            },
+            {
+                "steps": 24499086,
+                "file_path": "results\\RLegGone1\\Zombie Walker\\Zombie Walker-24499086.onnx",
+                "reward": 18.554807504018147,
+                "creation_time": 1715319988.553522,
+                "auxillary_file_paths": [
+                    "results\\RLegGone1\\Zombie Walker\\Zombie Walker-24499086.pt"
+                ]
+            },
+            {
+                "steps": 24999977,
+                "file_path": "results\\RLegGone1\\Zombie Walker\\Zombie Walker-24999977.onnx",
+                "reward": 21.222829818725586,
+                "creation_time": 1715320353.8466396,
+                "auxillary_file_paths": [
+                    "results\\RLegGone1\\Zombie Walker\\Zombie Walker-24999977.pt"
+                ]
+            },
+            {
+                "steps": 25000977,
+                "file_path": "results\\RLegGone1\\Zombie Walker\\Zombie Walker-25000977.onnx",
+                "reward": 20.62082815170288,
+                "creation_time": 1715320353.9068654,
+                "auxillary_file_paths": [
+                    "results\\RLegGone1\\Zombie Walker\\Zombie Walker-25000977.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 25000977,
+            "file_path": "results\\RLegGone1\\Zombie Walker.onnx",
+            "reward": 20.62082815170288,
+            "creation_time": 1715320353.9068654,
+            "auxillary_file_paths": [
+                "results\\RLegGone1\\Zombie Walker\\Zombie Walker-25000977.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}

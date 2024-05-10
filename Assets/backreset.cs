@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class backreset : MonoBehaviour
 {
-    /*
+    
     [SerializeField] ZombieAgent agent;
     private void OnTriggerEnter(Collider col)
     {
@@ -13,5 +13,5 @@ public class backreset : MonoBehaviour
             agent.HandleCollision(null, 3);
         }
     }
-    */
+    
 }
