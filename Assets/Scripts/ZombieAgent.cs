@@ -37,7 +37,7 @@ public class ZombieAgent : Agent
 
     BodyPart headBP;
     BodyPart thighRBP;
-    BodyPart upperArmRBP;
+    BodyPart lowerArmRBP;
 
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
@@ -131,13 +131,13 @@ public class ZombieAgent : Agent
             {
                 headBP = bodyPart;
             }
-            if (bodyPart.rb.transform == armR)
+            if (bodyPart.rb.transform == forearmR)
             {
-                upperArmRBP = bodyPart;
+                lowerArmRBP = bodyPart;
             }
         }
 
-        //RemoveLimb(thighRBP);
+        RemoveLimb(lowerArmRBP);
     }
 
     public override void OnEpisodeBegin()

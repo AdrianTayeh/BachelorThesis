@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 23499978,
+                "file_path": "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-23499978.onnx",
+                "reward": 45.03326636283629,
+                "creation_time": 1715318393.4288166,
+                "auxillary_file_paths": [
+                    "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-23499978.pt"
+                ]
+            },
+            {
+                "steps": 23999932,
+                "file_path": "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-23999932.onnx",
+                "reward": 45.4293440314093,
+                "creation_time": 1715319078.7115147,
+                "auxillary_file_paths": [
+                    "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-23999932.pt"
+                ]
+            },
+            {
+                "steps": 24499945,
+                "file_path": "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-24499945.onnx",
+                "reward": 48.30759934721322,
+                "creation_time": 1715319763.939664,
+                "auxillary_file_paths": [
+                    "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-24499945.pt"
+                ]
+            },
+            {
+                "steps": 24999972,
+                "file_path": "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-24999972.onnx",
+                "reward": 46.80704647732764,
+                "creation_time": 1715320455.0411315,
+                "auxillary_file_paths": [
+                    "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-24999972.pt"
+                ]
+            },
+            {
+                "steps": 25000022,
+                "file_path": "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-25000022.onnx",
+                "reward": 46.79957431891026,
+                "creation_time": 1715320455.1024992,
+                "auxillary_file_paths": [
+                    "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-25000022.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 25000022,
+            "file_path": "results\\upperArmRightRemoval2\\Zombie Walker.onnx",
+            "reward": 46.79957431891026,
+            "creation_time": 1715320455.1024992,
+            "auxillary_file_paths": [
+                "results\\upperArmRightRemoval2\\Zombie Walker\\Zombie Walker-25000022.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}
