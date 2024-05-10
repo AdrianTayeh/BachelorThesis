@@ -38,6 +38,8 @@ public class ZombieAgent : Agent
     BodyPart headBP;
     BodyPart thighRBP;
     BodyPart upperArmRBP;
+    BodyPart thighLBP;
+
 
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
@@ -88,6 +90,9 @@ public class ZombieAgent : Agent
     bool hasCollided = false;
 
     float distanceRewardTimer;
+
+    float moveTimer;
+
     [SerializeField] Material redMaterial;
 
     OrientationCubeController orientationCube;
@@ -135,6 +140,10 @@ public class ZombieAgent : Agent
             {
                 upperArmRBP = bodyPart;
             }
+            if (bodyPart.rb.transform == thighL)
+            {
+                thighLBP = bodyPart;
+            }
         }
 
         RemoveLimb(thighRBP);
@@ -169,7 +178,7 @@ public class ZombieAgent : Agent
         //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
 
         timer = 0;
-        distanceRewardTimer = 0;
+        //distanceRewardTimer = 0;
 
         UpdateOrientationObjects();
         TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(1f, maxWalkingSpeed) : TargetWalkingSpeed;
@@ -306,15 +315,9 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
-        distanceRewardTimer += Time.deltaTime;
-        if (distanceRewardTimer >= 0.5f)
-        {
-            float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
-            float rewardDist = 1 - (currentDistance / initDistance);
-            AddReward(rewardDist);
-            distanceRewardTimer = 0f;
-        }
-
+        float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
+        float rewardDist = 1 - (currentDistance / initDistance);
+        AddReward(rewardDist);
 
         if (hips.position.y < -1)
         {
