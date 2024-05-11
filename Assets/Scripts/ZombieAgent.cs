@@ -39,6 +39,7 @@ public class ZombieAgent : Agent
     BodyPart thighRBP;
     BodyPart upperArmRBP;
     BodyPart thighLBP;
+    BodyPart lowerLBP;
 
 
     [Header("Stabilizer")]
@@ -144,9 +145,13 @@ public class ZombieAgent : Agent
             {
                 thighLBP = bodyPart;
             }
+            if(bodyPart.rb.transform == forearmL)
+            {
+                lowerLBP = bodyPart;
+            }
         }
 
-        RemoveLimb(thighRBP);
+        RemoveLimb(lowerLBP);
     }
 
     public override void OnEpisodeBegin()
@@ -315,9 +320,9 @@ public class ZombieAgent : Agent
             hasCollided = false;
         }
 
-        float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
-        float rewardDist = 1 - (currentDistance / initDistance);
-        AddReward(rewardDist);
+        //float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
+        //float rewardDist = 1 - (currentDistance / initDistance);
+        //AddReward(rewardDist);
 
         if (hips.position.y < -1)
         {
@@ -354,16 +359,16 @@ public class ZombieAgent : Agent
 
         AddReward(matchSpeedReward * lookAtTargetReward);
 
-        /*
+        
         float headSpeed = headBP.rb.velocity.magnitude;
         float bodySpeed = GetAvgVelocity().magnitude;
 
         if (headSpeed > bodySpeed)
         {
             float excessSpeed = headSpeed - bodySpeed;
-            AddReward(Mathf.Clamp(-excessSpeed * 0.1f, -1f, 1f));
+            AddReward(Mathf.Clamp(-excessSpeed * 0.01f, -1f, 1f));
         }
-        */
+        
 
 
 

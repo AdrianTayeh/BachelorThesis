@@ -1,0 +1,65 @@
+{
+    "Zombie Walker": {
+        "checkpoints": [
+            {
+                "steps": 28499962,
+                "file_path": "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-28499962.onnx",
+                "reward": 47.18180664725926,
+                "creation_time": 1715404671.0401673,
+                "auxillary_file_paths": [
+                    "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-28499962.pt"
+                ]
+            },
+            {
+                "steps": 28999985,
+                "file_path": "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-28999985.onnx",
+                "reward": 46.49611734939834,
+                "creation_time": 1715405074.8228557,
+                "auxillary_file_paths": [
+                    "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-28999985.pt"
+                ]
+            },
+            {
+                "steps": 29499987,
+                "file_path": "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-29499987.onnx",
+                "reward": 45.196519490863594,
+                "creation_time": 1715405478.0607054,
+                "auxillary_file_paths": [
+                    "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-29499987.pt"
+                ]
+            },
+            {
+                "steps": 29999969,
+                "file_path": "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-29999969.onnx",
+                "reward": 47.44749196370443,
+                "creation_time": 1715405885.8113072,
+                "auxillary_file_paths": [
+                    "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-29999969.pt"
+                ]
+            },
+            {
+                "steps": 30000060,
+                "file_path": "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-30000060.onnx",
+                "reward": 47.385104303774625,
+                "creation_time": 1715405885.850998,
+                "auxillary_file_paths": [
+                    "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-30000060.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 30000060,
+            "file_path": "results\\LForearmGone5\\Zombie Walker.onnx",
+            "reward": 47.385104303774625,
+            "creation_time": 1715405885.850998,
+            "auxillary_file_paths": [
+                "results\\LForearmGone5\\Zombie Walker\\Zombie Walker-30000060.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.0+cpu"
+    }
+}
