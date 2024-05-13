@@ -39,10 +39,12 @@ public class ZombieAgent : Agent
     BodyPart thighRBP;
     BodyPart upperArmRBP;
     BodyPart thighLBP;
+    BodyPart foreArmLBP;
 
     [SerializeField] NNModel headBrain;
     [SerializeField] NNModel armBrain;
     [SerializeField] NNModel legBrain;
+    [SerializeField] NNModel upperRightArmBrain;
 
     BodyPart lastRemoved;
     float lastMass;
@@ -153,6 +155,10 @@ public class ZombieAgent : Agent
             {
                 thighLBP = bodyPart;
             }
+            if(bodyPart.rb.transform == forearmL)
+            {
+                foreArmLBP = bodyPart;
+            }
 
         }
 
@@ -242,6 +248,24 @@ public class ZombieAgent : Agent
 
         SetModel("Zombie Walker", brain, InferenceDevice.Burst);
 
+    }
+
+    public void RestoreLimb()
+    {
+        allowGroundReset = true;
+        if (lastRemoved != null)
+        {
+            lastRemoved.rb.mass = lastMass;
+            lastRemoved.rb.gameObject.GetComponent<Collider>().enabled = true;
+            Collider[] lastCol = lastRemoved.rb.gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider c in lastCol)
+                c.enabled = true;
+            lastRemoved.rb.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+            Renderer[] lastRenderer = lastRemoved.rb.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in lastRenderer)
+                r.enabled = true;
+        }
+        SetModel("Zombie Walker", headBrain, InferenceDevice.Burst);
     }
 
 
@@ -338,17 +362,21 @@ public class ZombieAgent : Agent
     {
         UpdateOrientationObjects();
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKey(KeyCode.Alpha1))
         {
             RemoveLimb(headBP, headBrain, true);
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            RemoveLimb(foreArmLBP, armBrain, true);
+        }
+        if (Input.GetKey(KeyCode.Alpha3))
         {
             RemoveLimb(thighLBP, legBrain, false);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.Alpha4))
         {
-            RemoveLimb(upperArmRBP, armBrain, true);
+            RestoreLimb();
         }
 
         timer += Time.deltaTime;
@@ -441,10 +469,7 @@ public class ZombieAgent : Agent
     private void SpawnTarget()
     {
         goalTarget.transform.position = new Vector3(goalTarget.transform.position.x + 0.5f,goalTarget.transform.position.y, hips.position.z);
-        if (goalTarget.transform.position.x >= targetStart.transform.position.x + 14 || goalTarget.transform.position.x <= targetStart.transform.position.x - 14)
-        {
-            EndEpisode();
-        }
+        
     }
 
     public void HandleCollision(GameObject obj, int type)
