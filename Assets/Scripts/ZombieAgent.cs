@@ -6,8 +6,16 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System;
 using Random = UnityEngine.Random;
+using TreeEditor;
+using Unity.Barracuda;
+using Unity.MLAgents.Policies;
+using Unity.Burst.CompilerServices;
+
 public class ZombieAgent : Agent
 {
+
+
+    bool allowGroundReset = false;
 
     [Header("Body Parts")]
     public Transform hips;
@@ -27,26 +35,40 @@ public class ZombieAgent : Agent
     public Transform forearmR;
     public Transform handR;
 
+    BodyPart headBP;
+    BodyPart thighRBP;
+    BodyPart upperArmRBP;
+    BodyPart thighLBP;
+    BodyPart foreArmLBP;
+
+    [SerializeField] NNModel headBrain;
+    [SerializeField] NNModel armBrain;
+    [SerializeField] NNModel legBrain;
+    [SerializeField] NNModel upperRightArmBrain;
+
+    BodyPart lastRemoved;
+    float lastMass;
+
+
     [Header("Stabilizer")]
     [Range(1000, 4000)][SerializeField] float stabilizerTorque = 4000f;
     float minStabilizerTorque = 1000;
     float maxStabilizerTorque = 4000;
-    [SerializeField] Stabilizer hipsStabilizer;
-    [SerializeField] Stabilizer spineStabilizer;
+    //[SerializeField] Stabilizer hipsStabilizer;
+    //[SerializeField] Stabilizer spineStabilizer;
 
     [Header("Walk Speed")]
     [Range(0.1f, 10f)]
     [SerializeField]
-    float targetWalkingSpeed = 10f;
+    float targetWalkingSpeed = 10;
     const float minWalkingSpeed = 0.1f;
-    const float maxWalkingSpeed = 10f;
-
+    const float maxWalkingSpeed = 10;
 
 
     public float TargetWalkingSpeed
     {
         get { return targetWalkingSpeed; }
-        set { targetWalkingSpeed = Mathf.Clamp(value, minWalkingSpeed, maxWalkingSpeed); }
+        set { targetWalkingSpeed = Mathf.Clamp(value, 0.1f, maxWalkingSpeed); }
     }
 
     public float StabilizerTorque
@@ -57,12 +79,30 @@ public class ZombieAgent : Agent
 
     public bool randomizeWalkSpeedEachEpisode;
 
-    private Vector3 worldDirToWalk = Vector3.right;
+    private Vector3 worldDirToWalk = Vector3.forward;
 
     [Header("Target")]
     public Transform target;
     public GameObject goalTarget;
     public Transform targetStart;
+
+    public float spawnRadius = 12;
+
+    [Header("Reward Weights")]
+    public float wv = 0.02f;
+    public float wo = 0.01f;
+    public float wh = 0.01f;
+
+
+    float resetTimer = 0.2f;
+    float timer = 0;
+    bool hasCollided = false;
+
+    float distanceRewardTimer;
+
+    float moveTimer;
+
+    [SerializeField] Material redMaterial;
 
     OrientationCubeController orientationCube;
 
@@ -72,6 +112,8 @@ public class ZombieAgent : Agent
 
     public override void Initialize()
     {
+        lastRemoved = null;
+        lastMass = 0;
         orientationCube = GetComponentInChildren<OrientationCubeController>();
         jdController = GetComponent<JointDriveController>();
         jdController.SetupBodyPart(hips);
@@ -91,9 +133,36 @@ public class ZombieAgent : Agent
         jdController.SetupBodyPart(forearmR);
         jdController.SetupBodyPart(handR);
 
-        hipsStabilizer.uprightTorque = stabilizerTorque;
-        spineStabilizer.uprightTorque = stabilizerTorque;
+        //hipsStabilizer.uprightTorque = stabilizerTorque;
+        //spineStabilizer.uprightTorque = stabilizerTorque;
 
+        foreach (BodyPart bodyPart in jdController.bodyPartsList)
+        {
+            if (bodyPart.rb.transform == thighR)
+            {
+                 thighRBP = bodyPart;
+            }
+
+            if (bodyPart.rb.transform == head)
+            {
+                headBP = bodyPart;
+            }
+            if (bodyPart.rb.transform == armR)
+            {
+                upperArmRBP = bodyPart;
+            }
+            if (bodyPart.rb.transform == thighL)
+            {
+                thighLBP = bodyPart;
+            }
+            if(bodyPart.rb.transform == forearmL)
+            {
+                foreArmLBP = bodyPart;
+            }
+
+        }
+
+        //RemoveLimb(thighRBP);
     }
 
     public override void OnEpisodeBegin()
@@ -102,15 +171,34 @@ public class ZombieAgent : Agent
         {
             bodyPart.Reset(bodyPart);
         }
-        float x = Random.Range(targetStart.position.x - 2f, targetStart.position.x + 2f);
-        float z = Random.Range(targetStart.position.z - 4f, targetStart.position.z + 4f);
-        //goalTarget.transform.position = new Vector3(x, 1f, z);
+        foreach (var bodyPart in jdController.bodyPartsDict.Values)
+        {
+            bodyPart.Reset(bodyPart);
+        }
+        goalTarget.transform.position = targetStart.transform.position;
 
-        hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+        //MoveTargetToRandomPosition();
+
+        /*
+        float x, z;
+        while (true)
+        {
+            x = Random.Range(targetStart.position.x - 12f, targetStart.position.x + 12f);
+            z = Random.Range(targetStart.position.z - 12f, targetStart.position.z + 12f);
+            if ((x < targetStart.position.x - 6f || x > targetStart.position.x + 6f)
+                && (z < targetStart.position.z - 6f || z > targetStart.position.z + 6f))
+                break;
+        }
+        goalTarget.transform.position = new Vector3( x, targetStart.position.y, z);
+        */
+        //hips.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+
+        timer = 0;
+        //distanceRewardTimer = 0;
 
         UpdateOrientationObjects();
-        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(minWalkingSpeed, maxWalkingSpeed) : TargetWalkingSpeed;
-        initDistance = Vector3.Distance(hips.position, target.position);
+        TargetWalkingSpeed = randomizeWalkSpeedEachEpisode ? Random.Range(1f, maxWalkingSpeed) : TargetWalkingSpeed;
+        initDistance = Vector3.Distance(GetAvgPosition(), target.position);
 
     }
 
@@ -120,19 +208,66 @@ public class ZombieAgent : Agent
         orientationCube.UpdateOrientation(hips, target);      
     }
 
-    Vector3 GetAvgVelocity()
+    public void MoveTargetToRandomPosition()
     {
-        Vector3 velSum = Vector3.zero;
-
-        int numOfRb = 0;
-        foreach (var item in jdController.bodyPartsList)
-        {
-            numOfRb++;
-            velSum += item.rb.velocity;
-        }
-        var avgVel = velSum / numOfRb;
-        return avgVel;
+        Vector3 newTargetPos = targetStart.position + (Random.insideUnitSphere * spawnRadius);
+        newTargetPos.y = targetStart.position.y;
+        target.position = newTargetPos;
     }
+
+    public void RemoveLimb(BodyPart limb, NNModel brain, bool groundReset) // add string as parameter and NNmodel
+    {
+        if(groundReset)
+            allowGroundReset = true;
+        else
+            allowGroundReset = false;
+        if(lastRemoved != null)
+        {
+            lastRemoved.rb.mass = lastMass;
+            lastRemoved.rb.gameObject.GetComponent<Collider>().enabled = true;
+            Collider[] lastCol = lastRemoved.rb.gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider c in lastCol)
+                c.enabled = true;
+            lastRemoved.rb.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+            Renderer[] lastRenderer = lastRemoved.rb.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in lastRenderer)
+                r.enabled = true;
+        }
+        lastMass = limb.rb.mass;
+        lastRemoved = limb;
+
+        limb.rb.mass = 0f;
+        limb.rb.gameObject.GetComponent<Collider>().enabled = false;
+        Collider[] cs = limb.rb.gameObject.GetComponentsInChildren<Collider>();
+        foreach (Collider c in cs)
+            c.enabled = false;
+        limb.rb.gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+        Renderer[] rs = limb.rb.gameObject.GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rs)
+            r.enabled = false;
+
+        SetModel("Zombie Walker", brain, InferenceDevice.Burst);
+
+    }
+
+    public void RestoreLimb()
+    {
+        allowGroundReset = true;
+        if (lastRemoved != null)
+        {
+            lastRemoved.rb.mass = lastMass;
+            lastRemoved.rb.gameObject.GetComponent<Collider>().enabled = true;
+            Collider[] lastCol = lastRemoved.rb.gameObject.GetComponentsInChildren<Collider>();
+            foreach (Collider c in lastCol)
+                c.enabled = true;
+            lastRemoved.rb.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+            Renderer[] lastRenderer = lastRemoved.rb.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (Renderer r in lastRenderer)
+                r.enabled = true;
+        }
+        SetModel("Zombie Walker", headBrain, InferenceDevice.Burst);
+    }
+
 
     Vector3 GetAvgPosition()
     {
@@ -148,14 +283,6 @@ public class ZombieAgent : Agent
         return avgPos;
     }
 
-    public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
-    {
-        var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
-
-        if (TargetWalkingSpeed == 0) TargetWalkingSpeed = 0.01f;
-
-        return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
-    }
 
     public void CollectObservationBodyPart(BodyPart bp, VectorSensor sensor)
     {
@@ -179,14 +306,12 @@ public class ZombieAgent : Agent
 
         var velGoal = cubeForward * TargetWalkingSpeed;
         var avgVel = GetAvgVelocity();
-
         sensor.AddObservation(Vector3.Distance(velGoal, avgVel));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(avgVel));
         sensor.AddObservation(orientationCube.transform.InverseTransformDirection(velGoal));
-
+        sensor.AddObservation(orientationCube.transform.InverseTransformDirection(target.position - hips.position));
         sensor.AddObservation(Quaternion.FromToRotation(hips.forward, cubeForward));
         sensor.AddObservation(Quaternion.FromToRotation(head.forward, cubeForward));
-
         sensor.AddObservation(orientationCube.transform.InverseTransformPoint(target.transform.position));
 
         foreach (var bodyPart in jdController.bodyPartsList)
@@ -230,14 +355,47 @@ public class ZombieAgent : Agent
         bpDict[forearmL].SetJointStrength(continuousActions[++i]);
         bpDict[armR].SetJointStrength(continuousActions[++i]);
         bpDict[forearmR].SetJointStrength(continuousActions[++i]);
+
     }
 
     private void FixedUpdate()
     {
         UpdateOrientationObjects();
 
-        var cubeForward = orientationCube.transform.forward;
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            RemoveLimb(headBP, headBrain, true);
+        }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            RemoveLimb(foreArmLBP, armBrain, true);
+        }
+        if (Input.GetKey(KeyCode.Alpha3))
+        {
+            RemoveLimb(thighLBP, legBrain, false);
+        }
+        if (Input.GetKey(KeyCode.Alpha4))
+        {
+            RestoreLimb();
+        }
 
+        timer += Time.deltaTime;
+        if(timer > resetTimer)
+        {
+            hasCollided = false;
+        }
+
+        float currentDistance = Vector3.Distance(GetAvgPosition(), target.position);
+        float rewardDist = 1 - (currentDistance / initDistance);
+        AddReward(rewardDist);
+
+        if (hips.position.y < -1)
+        {
+            OnEpisodeBegin();
+        }
+
+
+        var cubeForward = orientationCube.transform.forward;
         var matchSpeedReward = GetMatchingVelocityReward(cubeForward * TargetWalkingSpeed, GetAvgVelocity());
 
         if (float.IsNaN(matchSpeedReward))
@@ -252,8 +410,7 @@ public class ZombieAgent : Agent
 
         var headForward = head.forward;
         headForward.y = 0;
-
-        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1)*0.5f;
+        var lookAtTargetReward = (Vector3.Dot(cubeForward, headForward) + 1) * 0.5f;
 
         if (float.IsNaN(lookAtTargetReward))
         {
@@ -263,11 +420,90 @@ public class ZombieAgent : Agent
                 $" head.forward: {head.forward}"
             );
         }
-
+        
 
         AddReward(matchSpeedReward * lookAtTargetReward);
+
+        /*
+        float headSpeed = headBP.rb.velocity.magnitude;
+        float bodySpeed = GetAvgVelocity().magnitude;
+
+        if (headSpeed > bodySpeed)
+        {
+            float excessSpeed = headSpeed - bodySpeed;
+            AddReward(Mathf.Clamp(-excessSpeed * 0.1f, -1f, 1f));
+        }
+        */
+
+
+
+    }
+    Vector3 GetAvgVelocity()
+    {
+        Vector3 velSum = Vector3.zero;
+
+        int numOfRb = 0;
+        foreach (BodyPart bodyPart in jdController.bodyPartsList)
+        {
+            if (bodyPart.rb.transform == head)
+            {
+                headBP = bodyPart;
+            }
+            numOfRb++;
+            velSum += bodyPart.rb.velocity;
+        }
+        var avgVel = velSum / numOfRb;
+        return avgVel;
     }
 
+    public float GetMatchingVelocityReward(Vector3 velocityGoal, Vector3 actualVelocity)
+    {
+        //distance between our actual velocity and goal velocity
+        var velDeltaMagnitude = Mathf.Clamp(Vector3.Distance(actualVelocity, velocityGoal), 0, TargetWalkingSpeed);
+
+        //return the value on a declining sigmoid shaped curve that decays from 1 to 0
+        //This reward will approach 1 if it matches perfectly and approach zero as it deviates
+        return Mathf.Pow(1 - Mathf.Pow(velDeltaMagnitude / TargetWalkingSpeed, 2), 2);
+    }
+
+    private void SpawnTarget()
+    {
+        goalTarget.transform.position = new Vector3(goalTarget.transform.position.x + 0.5f,goalTarget.transform.position.y, hips.position.z);
+        
+    }
+
+    public void HandleCollision(GameObject obj, int type)
+    {
+        if (hasCollided == false && timer > resetTimer)
+        {
+            
+            hasCollided = true;
+            if (type == 1)
+            {
+                Debug.Log("Target Reached!");
+                AddReward(1f);
+                SpawnTarget();
+                //MoveTargetToRandomPosition();
+            }
+            else if(type == 2)
+            {
+                //Debug.Log("Wall Contact");
+                obj.GetComponent<MeshRenderer>().material = redMaterial;
+                SetReward(-1f);
+                EndEpisode();
+
+            }
+            else if(type  == 3)
+            {
+                //Debug.Log("Back touched ground!");
+                if (allowGroundReset)
+                {
+                    SetReward(-1f);
+                    EndEpisode();
+                }
+            }
+        }
+    }
 
 
 

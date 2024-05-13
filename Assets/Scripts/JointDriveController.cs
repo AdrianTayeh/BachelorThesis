@@ -47,15 +47,20 @@ public class BodyPart
         bp.rb.transform.rotation = bp.startingRot;
         bp.rb.velocity = Vector3.zero;
         bp.rb.angularVelocity = Vector3.zero;
+
         if (bp.groundContact)
         {
             bp.groundContact.touchingGround = false;
         }
 
+
+        //connected with touching target
+        
         if (bp.targetContact)
         {
             bp.targetContact.touchingTarget = false;
         }
+        
     }
 
     public void SetJointTargetRotation(float x, float y, float z)
@@ -124,11 +129,11 @@ public class JointDriveController : MonoBehaviour
         if (!bp.groundContact)
         {
             bp.groundContact = t.gameObject.AddComponent<GroundContact>();
-            bp.groundContact.agent = gameObject.GetComponent<Agent>();
+            bp.groundContact.agent = gameObject.GetComponent<ZombieAgent>();
         }
         else
         {
-            bp.groundContact.agent = gameObject.GetComponent<Agent>();
+            bp.groundContact.agent = gameObject.GetComponent<ZombieAgent>();
         }
 
         if (bp.joint)

@@ -6,7 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class GroundContact : MonoBehaviour
 {
-    public Agent agent;
+    public ZombieAgent agent;
     Vector3 initPos;
     Vector3 targetPos;
 
@@ -18,41 +18,29 @@ public class GroundContact : MonoBehaviour
     public float rewardDist;
     private bool rewardCollected = false;
 
-    private void Start()
-    {
-        initPos = GameObject.Find("hips").transform.position;
-        targetPos = GameObject.FindGameObjectWithTag("target").transform.position;
-    }
-
     void OnCollisionEnter(Collision col)
     {
-        //if (col.transform.CompareTag(k_Ground))
-        //{
-        //    agent.SetReward(0f);
-
-        //    touchingGround = true;
-        //    if (penalizeGroundContact)
-        //    {
-        //        agent.AddReward(groundContactPenalty);
-        //    }
-
-        //    if (agentDoneOnGroundContact)
-        //    {
-        //        rewardDist = 1 - (Vector3.Distance(GameObject.Find("hips").transform.position, targetPos)/Vector3.Distance(initPos, targetPos));
-        //        agent.AddReward(10*rewardDist);
-        //        Debug.Log("Dist Rewards: " + (rewardDist * 6) + " Tot rewards: " + agent.GetCumulativeReward());
-        //        rewardCollected = false;
-        //        agent.EndEpisode();
-        //    }
-        //}
+        
+        if (col.transform.CompareTag(k_Ground))
+        {
+            if (penalizeGroundContact)
+            {
+                touchingGround = true;
+                agent.HandleCollision(null, 3);
+            }
+        }
+        
+        
     }
 
 
     void OnCollisionExit(Collision other)
     {
+        
         if (other.transform.CompareTag(k_Ground))
         {
             touchingGround = false;
         }
+        
     }
 }
